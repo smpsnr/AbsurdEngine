@@ -20,17 +20,11 @@ public abstract class GameActivity extends Activity
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-                
-        // get an instance of the GameView subclass implemented in the program
-        game = initializeGame();
+        super.onCreate(savedInstanceState);        
         
         // implicitly bind handler to UI thread's message queue (explicit binding does not work on iOS)
         gameHandler = new Handler();
         gameRunner = new RunnerThread(this);
-        gameRunner.start();
-        
-        setContentView(game);
     }
     
     @Override
@@ -53,6 +47,19 @@ public abstract class GameActivity extends Activity
         } else {
             gameRunner.pause();
         }
+    }
+    
+    protected final void startGame() {
+    	gameHandler.post (
+            new Runnable() {
+                public void run() {
+                    // post to UI thread
+                 	game = initializeGame();
+                   	gameRunner.start();
+                    setContentView(game);
+                }
+            }
+        );
     }
     
     void updateGame() 

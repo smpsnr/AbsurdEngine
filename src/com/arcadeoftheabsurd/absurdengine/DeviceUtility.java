@@ -108,7 +108,8 @@ public class DeviceUtility
     		}
     	}
     	/*{{ IOSONLY
-    	private static native String getAdIdImpl();
+    	//nop
+    	return;
     	/*}}*/
 	}
 	
