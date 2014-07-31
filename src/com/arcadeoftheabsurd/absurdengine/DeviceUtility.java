@@ -25,19 +25,17 @@ public class DeviceUtility
 	public static final int PLAY_DIALOG_REQUEST_CODE = 1;
 	
 	private static Context context;
-	private static Activity activity;
 	
 	private static String localIp;
 	private static String userAgent;
 	private static String adId;
-	
-	public static void setDeviceContext(Context context, Activity activity) {
+		
+	public static void setDeviceContext(Context context) {
 		DeviceUtility.context = context;
-		DeviceUtility.activity = activity;
 	}
 	
 	public static void setLocalIp() throws InterruptedException {
-		Thread requestThread = new Thread(new Runnable() {
+		postBlocking(new Runnable() {
 			public void run() {
 				try {
 					localIp = WebUtils.getLocalIpAddress();
@@ -46,16 +44,18 @@ public class DeviceUtility
 				}
 			}
 		});
-		requestThread.start();
-		requestThread.join();
 	}
 	
 	public static void setUserAgent() {
 		userAgent = WebUtils.getUserAgent(context);
 	}
 	
-	public static void setAdId() {
-		adId = getAdIdImpl();
+	public static void setAdId() throws InterruptedException {
+		postBlocking(new Runnable() {
+			public void run() {
+				adId = getAdIdImpl();
+			}
+		});
 	}
 	
 	public static String getLocalIp() {
@@ -90,8 +90,9 @@ public class DeviceUtility
 		/*}}*/
 	}
 	
-	/*{{ ANDROIDONLY*/
-	public static void requireAdService() {
+	
+	public static void requireAdService(final Activity activity) {
+		/*{{ ANDROIDONLY*/
 		int error = GooglePlayServicesUtil.isGooglePlayServicesAvailable(context);
     	if (error != ConnectionResult.SUCCESS) {
     		if (GooglePlayServicesUtil.isUserRecoverableError(error)) {
@@ -102,12 +103,20 @@ public class DeviceUtility
 					}
 				}).show();
     		} else {
-    			Toast.makeText(context, "Google Play Services reported the following error: " + new ConnectionResult(error, null).toString(), Toast.LENGTH_SHORT).show();
+    			Toast.makeText(context, "Google Play Services reported the following error: " + GooglePlayServicesUtil.getErrorString(error), Toast.LENGTH_SHORT).show();
     			activity.finish();
     		}
     	}
+    	/*{{ IOSONLY
+    	private static native String getAdIdImpl();
+    	/*}}*/
 	}
-	/*}}*/
+	
+	static void postBlocking(Runnable r) throws InterruptedException {
+		Thread thread = new Thread(r);
+		thread.start();
+		thread.join();
+	}
 	
 	/*{{ ANDROIDONLY*/
 	private static String getAdIdImpl() {
