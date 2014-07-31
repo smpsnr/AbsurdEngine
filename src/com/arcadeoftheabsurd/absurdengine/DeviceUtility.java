@@ -6,11 +6,12 @@ import android.app.Activity;
 import android.content.Context;
 
 /*{{ ANDROIDONLY*/
+import android.content.DialogInterface;
+import android.widget.Toast;
+
 import com.google.android.gms.ads.identifier.AdvertisingIdClient;
 import com.google.android.gms.ads.identifier.AdvertisingIdClient.Info;
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
-import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 /*}}
 
@@ -21,52 +22,53 @@ import com.google.android.gms.common.GooglePlayServicesUtil;
 
 public class DeviceUtility 
 {
+	public static final int PLAY_DIALOG_REQUEST_CODE = 1;
+	
 	private static Context context;
 	private static Activity activity;
+	
+	private static String localIp;
+	private static String userAgent;
+	private static String adId;
 	
 	public static void setDeviceContext(Context context, Activity activity) {
 		DeviceUtility.context = context;
 		DeviceUtility.activity = activity;
 	}
 	
-	/*{{ ANDROIDONLY*/
+	public static void setLocalIp() throws InterruptedException {
+		Thread requestThread = new Thread(new Runnable() {
+			public void run() {
+				try {
+					localIp = WebUtils.getLocalIpAddress();
+				} catch (IOException e) {
+					localIp = null;
+				}
+			}
+		});
+		requestThread.start();
+		requestThread.join();
+	}
+	
+	public static void setUserAgent() {
+		userAgent = WebUtils.getUserAgent(context);
+	}
+	
+	public static void setAdId() {
+		adId = getAdIdImpl();
+	}
+	
+	public static String getLocalIp() {
+		return localIp;
+	}
+	
+	public static String getUserAgent() {
+		return userAgent;
+	}
+	
 	public static String getAdId() {
-		Info adInfo = null;
-		String result = null;
-		
-		try {
-			adInfo = AdvertisingIdClient.getAdvertisingIdInfo(context);
-		} catch (IOException e) {
-			return result;
-		} catch (GooglePlayServicesRepairableException e) {
-			return result;
-		} catch (GooglePlayServicesNotAvailableException e) {
-			return result;
-		}
-		final String id = adInfo.getId();
-
-		if (!adInfo.isLimitAdTrackingEnabled()) {
-			result = id;
-		}
-		return result;
+		return adId;
 	}
-	/*}}*/
-	
-	/*{{ ANDROIDONLY*/
-	public static void testPlayServices() {
-		int error = GooglePlayServicesUtil.isGooglePlayServicesAvailable(context);
-    	if (error != ConnectionResult.SUCCESS) {
-    		System.out.println("google play services not working, showing dialog...");
-    		GooglePlayServicesUtil.getErrorDialog(error, activity, 0).show();
-    	} else {
-    		System.out.println("google play services working!");
-    	}
-	}
-	/*}}*/
-	
-	/*{{ IOSONLY
-	public static native String getAdId();
-	/*}}*/
 	
 	public static boolean isAndroid() {
 		/*{{ ANDROIDONLY*/
@@ -87,4 +89,39 @@ public class DeviceUtility
 		return true;
 		/*}}*/
 	}
+	
+	/*{{ ANDROIDONLY*/
+	public static void requireAdService() {
+		int error = GooglePlayServicesUtil.isGooglePlayServicesAvailable(context);
+    	if (error != ConnectionResult.SUCCESS) {
+    		if (GooglePlayServicesUtil.isUserRecoverableError(error)) {
+    			GooglePlayServicesUtil.getErrorDialog(error, activity, PLAY_DIALOG_REQUEST_CODE, new DialogInterface.OnCancelListener() {
+					public void onCancel(DialogInterface dialog) {
+						Toast.makeText(context, "Google Play Services must be installed.", Toast.LENGTH_SHORT).show();
+						activity.finish();
+					}
+				}).show();
+    		} else {
+    			Toast.makeText(context, "Google Play Services reported the following error: " + new ConnectionResult(error, null).toString(), Toast.LENGTH_SHORT).show();
+    			activity.finish();
+    		}
+    	}
+	}
+	/*}}*/
+	
+	/*{{ ANDROIDONLY*/
+	private static String getAdIdImpl() {
+		Info adInfo = null;		
+		try {
+			adInfo = AdvertisingIdClient.getAdvertisingIdInfo(context);
+		} catch (Exception e) {
+			return null;
+		}
+		return adInfo.getId();
+	}
+	/*}}*/
+	
+	/*{{ IOSONLY
+	private static native String getAdIdImpl();
+	/*}}*/
 }

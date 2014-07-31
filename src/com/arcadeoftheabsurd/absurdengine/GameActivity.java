@@ -22,6 +22,8 @@ public abstract class GameActivity extends Activity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
+        DeviceUtility.setDeviceContext(this, this);
+        
         // get an instance of the GameView subclass implemented in the program
         game = initializeGame();
         

@@ -2,9 +2,9 @@
 #include "xmlvm.h"
 #include "com_arcadeoftheabsurd_absurdengine_DeviceUtility.h"
 
-JAVA_OBJECT com_arcadeoftheabsurd_absurdengine_DeviceUtility_getAdId__()
+JAVA_OBJECT com_arcadeoftheabsurd_absurdengine_DeviceUtility_getAdIdImpl__()
 {
-	//XMLVM_BEGIN_NATIVE[com_arcadeoftheabsurd_absurdengine_DeviceUtility_getAdId__]
+	//XMLVM_BEGIN_NATIVE[com_arcadeoftheabsurd_absurdengine_DeviceUtility_getAdIdImpl__]
 	NSLog(@"this will return the advertising id");
 	
 	return JAVA_NULL;
