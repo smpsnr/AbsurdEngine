@@ -25,7 +25,8 @@ import android.widget.TextView;
 import com.adsdk.sdk.nativeads.NativeAd.Tracker;
 
 @SuppressLint("ViewConstructor")
-public class NativeAdView extends FrameLayout {
+public class NativeAdView extends FrameLayout 
+{
 	private boolean impressionReported;
 	private View adView;
 	private NativeAdListener listener;
@@ -66,8 +67,7 @@ public class NativeAdView extends FrameLayout {
 						view.setText(text);
 					}
 				}
-			} catch (ClassCastException e) {
-			}
+			} catch (ClassCastException e) {}
 		}
 
 		for (String key : binder.getImageAssetsBindingsKeySet()) {
@@ -81,8 +81,7 @@ public class NativeAdView extends FrameLayout {
 				if (view != null && imageBitmap != null) {
 					view.setImageBitmap(imageBitmap);
 				}
-			} catch (ClassCastException e) {
-			}
+			} catch (ClassCastException e) {}
 		}
 
 	}
@@ -132,9 +131,7 @@ public class NativeAdView extends FrameLayout {
 				}
 				return null;
 			}
-
 		};
 		task.execute();
 	}
-
 }

@@ -4,7 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-public class NativeViewBinder {
+public class NativeViewBinder 
+{
 	private Map<String, Integer> textAssetsBidings;
 	private Map<String, Integer> imageAssetsBidings;
 	private int adLayoutId;
@@ -52,5 +53,4 @@ public class NativeViewBinder {
 	public Set<String> getImageAssetsBindingsKeySet() {
 		return imageAssetsBidings.keySet();
 	}
-
 }

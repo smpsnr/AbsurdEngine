@@ -27,8 +27,8 @@ import com.adsdk.sdk.RequestException;
 import com.adsdk.sdk.nativeads.NativeAd.ImageAsset;
 import com.adsdk.sdk.nativeads.NativeAd.Tracker;
 
-public class RequestNativeAd {
-
+public class RequestNativeAd 
+{
 	public NativeAd sendRequest(NativeAdRequest request) throws RequestException {
 		String url = request.toString();
 		DefaultHttpClient client = new DefaultHttpClient();
@@ -58,9 +58,7 @@ public class RequestNativeAd {
 	}
 
 	protected NativeAd parse(final InputStream inputStream) throws RequestException {
-
 		final NativeAd response = new NativeAd();
-
 		try {
 			BufferedReader reader;
 			reader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"), 8);
@@ -100,7 +98,6 @@ public class RequestNativeAd {
 					response.addTextAsset(type, text);
 				}
 			}
-
 			response.setClickUrl(mainObject.optString("click_url", null));
 
 			JSONArray trackersArray = mainObject.optJSONArray("trackers");
@@ -123,7 +120,6 @@ public class RequestNativeAd {
 		} catch (JSONException e) {
 			throw new RequestException("Cannot parse Response", e);
 		}
-
 		return response;
 	}
 	
@@ -134,8 +130,6 @@ public class RequestNativeAd {
 			bitmap = BitmapFactory.decodeStream(in);
 		} catch (Exception e) {
 		}
-		
 		return bitmap;
 	}
-
 }

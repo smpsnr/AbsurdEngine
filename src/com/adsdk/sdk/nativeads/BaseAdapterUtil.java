@@ -1,7 +1,7 @@
 package com.adsdk.sdk.nativeads;
 
-public class BaseAdapterUtil {
-	
+public class BaseAdapterUtil 
+{	
 	private int firstAdPosition;
 	private int adPositionInterval;
 	
@@ -12,7 +12,6 @@ public class BaseAdapterUtil {
 		if(rowsOfOriginalContentBetweenAds < 1) {
 			throw new IllegalArgumentException("Number of rows of original content between ads cannot be lower than 1.");
 		}
-		
 		this.firstAdPosition = firstAdPosition;
 		this.adPositionInterval = rowsOfOriginalContentBetweenAds + 1;
 	}
@@ -37,7 +36,6 @@ public class BaseAdapterUtil {
 		if (contentRowCount <= firstAdPosition) {
 			return 0;
 		}
-
 		int originalContentBetweenAds = adPositionInterval - 1;
 		if ((contentRowCount - firstAdPosition) % originalContentBetweenAds == 0) {
 			return (contentRowCount - firstAdPosition) / originalContentBetweenAds;
@@ -47,11 +45,9 @@ public class BaseAdapterUtil {
 	}
 
 	public boolean isAdPosition(int position) {
-
 		if (position < firstAdPosition) {
 			return false;
 		}
-
 		return ((position - firstAdPosition) % adPositionInterval == 0);
 	}
 }

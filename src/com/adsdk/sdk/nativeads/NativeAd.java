@@ -7,7 +7,13 @@ import java.util.Map;
 
 import android.graphics.Bitmap;
 
-public class NativeAd {
+public class NativeAd 
+{
+	private String clickUrl;
+	private Map<String, ImageAsset> imageAssets = new HashMap<String, NativeAd.ImageAsset>();
+	private Map<String, String> textAssets = new HashMap<String, String>();
+	private List<Tracker> trackers = new ArrayList<NativeAd.Tracker>();
+	
 	public static class ImageAsset {
 		String url;
 		Bitmap bitmap;
@@ -19,11 +25,6 @@ public class NativeAd {
 		String type;
 		String url;
 	}
-
-	private String clickUrl;
-	private Map<String, ImageAsset> imageAssets = new HashMap<String, NativeAd.ImageAsset>();
-	private Map<String, String> textAssets = new HashMap<String, String>();
-	private List<Tracker> trackers = new ArrayList<NativeAd.Tracker>();
 
 	public String getClickUrl() {
 		return clickUrl;
@@ -56,5 +57,4 @@ public class NativeAd {
 	public void setTrackers(List<Tracker> trackers) {
 		this.trackers = trackers;
 	}
-
 }

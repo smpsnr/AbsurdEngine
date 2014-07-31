@@ -1,7 +1,7 @@
 package com.adsdk.sdk.nativeads;
 
-public interface NativeAdListener {
-	
+public interface NativeAdListener
+{
 	public void adLoaded(NativeAd ad);
 
 	public void adFailedToLoad();
@@ -9,5 +9,4 @@ public interface NativeAdListener {
 	public void impression();
 
 	public void adClicked();
-
 }

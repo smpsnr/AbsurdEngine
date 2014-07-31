@@ -7,7 +7,8 @@ import com.adsdk.sdk.Const;
 import com.adsdk.sdk.Gender;
 import com.arcadeoftheabsurd.absurdengine.DeviceUtility;
 
-public class NativeAdRequest {
+public class NativeAdRequest 
+{
 	private static final String REQUEST_TYPE = "native";
 	private static final String RESPONSE_TYPE = "json";
 	private static final String IMAGE_TYPES = "icon,main";

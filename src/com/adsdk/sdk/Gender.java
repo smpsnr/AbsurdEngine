@@ -1,6 +1,7 @@
 package com.adsdk.sdk;
 
-public enum Gender {
+public enum Gender 
+{
 	MALE("m"),
 	FEMALE("f");
 	
