@@ -1,7 +1,5 @@
 package com.arcadeoftheabsurd.absurdengine;
 
-import java.io.IOException;
-
 import android.app.Activity;
 import android.content.Context;
 
@@ -41,15 +39,6 @@ public class DeviceUtility
 	
 	public static void setLocalIp() {
 		localIp = getLocalIpImpl();
-		/*postBlocking(new Runnable() {
-			public void run() {
-				try {
-					localIp = WebUtils.getLocalIpAddress();
-				} catch (IOException e) {
-					localIp = null;
-				}
-			}
-		});*/
 	}
 	
 	public static void setUserAgent() {
@@ -95,7 +84,6 @@ public class DeviceUtility
 		return true;
 		/*}}*/
 	}
-	
 	
 	public static void requireAdService(final Activity activity) {
 		/*{{ ANDROIDONLY*/

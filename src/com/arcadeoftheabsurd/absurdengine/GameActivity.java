@@ -53,7 +53,7 @@ public abstract class GameActivity extends Activity
     	gameHandler.post (
             new Runnable() {
                 public void run() {
-                    // post to UI thread
+                	// post to UI thread
                  	game = initializeGame();
                    	gameRunner.start();
                     setContentView(game);
