@@ -87,8 +87,8 @@ public class RunnerThread extends Thread
     
     @Override
     public void start() {
-        super.start();
         threadRunning = true;
         gameTime = System.currentTimeMillis();
+        super.start();
     }
 }

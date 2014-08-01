@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
-import com.arcadeoftheabsurd.j_utils.Delegate;
 import com.arcadeoftheabsurd.j_utils.Pair;
 import com.arcadeoftheabsurd.j_utils.Vector2d;
 
@@ -19,24 +18,32 @@ import com.arcadeoftheabsurd.j_utils.Vector2d;
  */
 
 public abstract class GameView extends View implements Observer
-{    
+{    	
     protected ArrayList<Timer> timers = new ArrayList<Timer>();
     protected int bitmapsInitialized = 0;
     
+    private GameLoadListener loadListener;
     private ArrayList<BitmapHolder> bitmapStorage = new ArrayList<BitmapHolder>();
-    private boolean setupDone = false;
     
-    protected abstract void setup(int width, int height);
+    protected abstract void startGame();
+    protected abstract void setupGame(int width, int height);
     protected abstract void updateGame();
     
-    public GameView(Context context) {
+    public interface GameLoadListener
+    {
+    	void gameLoaded();
+    }
+    
+    public GameView(Context context, GameLoadListener loadListener) {
         super(context);
+        this.loadListener = loadListener;
     }
     
     @Override
 	public void onSizeChanged(int newWidth, int newHeight, int oldWidth, int oldHeight) {
-    	setup(newWidth, newHeight);
-    	setupDone = true;
+    	setupGame(newWidth, newHeight);
+    	loadListener.gameLoaded();
+    	startGame();
     }
     
     // called when timers fire
@@ -56,7 +63,6 @@ public abstract class GameView extends View implements Observer
     	return new Sprite(bitmapStorage.get(bitmapId), x, y);
     }
     
-    @SuppressWarnings("unchecked")
 	protected ArrayList<Integer> loadBitmapResources(Pair<Integer, Vector2d>... args) {
     	ArrayList<Integer> bitmapIds = new ArrayList<Integer>();
 		for (int i = 0; i < args.length; i++) {
@@ -81,6 +87,15 @@ public abstract class GameView extends View implements Observer
     }
     
     protected void drawSprite(Canvas canvas, Sprite sprite) {
+    	if (!sprite.bitmapHolder.initialized) {
+			sprite.bitmapHolder.initialize();
+    	}
+	    canvas.drawBitmap(sprite.isResized() ? 
+	        sprite.bitmapHolder.scaleCopy(sprite.getWidth(), sprite.getHeight()) : 
+		    sprite.bitmapHolder.bitmap, sprite.getX(), sprite.getY(), null);
+    }
+    
+    /*protected void drawSprite(Canvas canvas, Sprite sprite) {
     	drawSpriteDelegate.function(canvas, sprite);
     }
     
@@ -97,12 +112,12 @@ public abstract class GameView extends View implements Observer
     
     private Delegate waitForSetup = new Delegate() {
     	public void function(Object... args) {
-    		if (setupDone) {
+    		if (sizeSetup) {
     			drawSpriteDelegate = drawBitmap;
     			drawSpriteDelegate.function(args);
     		}
 		}
     };
 	
-	private Delegate drawSpriteDelegate = waitForSetup;
+	private Delegate drawSpriteDelegate = waitForSetup;*/
 }

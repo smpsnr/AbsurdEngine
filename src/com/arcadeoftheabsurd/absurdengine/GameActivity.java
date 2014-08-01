@@ -1,5 +1,7 @@
 package com.arcadeoftheabsurd.absurdengine;
 
+import com.arcadeoftheabsurd.absurdengine.GameView.GameLoadListener;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
@@ -10,13 +12,13 @@ import android.os.Handler;
  * @author sam
  */
 
-public abstract class GameActivity extends Activity
+public abstract class GameActivity extends Activity implements GameLoadListener
 {    
     private RunnerThread gameRunner;
-    private GameView game;  
     private Handler gameHandler;
     
-    protected abstract GameView initializeGame();
+    protected GameView game;  
+    protected abstract void initializeGame();
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,17 +51,21 @@ public abstract class GameActivity extends Activity
         }
     }
     
-    protected final void startGame() {
+    protected final void loadGame() {
     	gameHandler.post (
             new Runnable() {
                 public void run() {
                 	// post to UI thread
-                 	game = initializeGame();
-                   	gameRunner.start();
-                    setContentView(game);
+                 	initializeGame();
+                 	setContentView(game);
                 }
             }
         );
+    }
+    
+    @Override
+    public void gameLoaded() {
+    	gameRunner.start();
     }
     
     void updateGame() 
