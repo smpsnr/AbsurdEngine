@@ -10,7 +10,6 @@ import java.net.URL;
 import java.net.URLConnection;
 
 import android.content.Context;
-
 import android.webkit.WebView;
 
 /**
@@ -62,5 +61,19 @@ public class WebUtils
 		String filePath = context.getFileStreamPath(fileName).getAbsolutePath();
 		
 		return filePath;
+	}
+	
+	public static String restRequest(String request) throws IOException {
+		URL url = new URL(request);
+		URLConnection conn = url.openConnection();
+		BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
+
+		StringBuilder result = new StringBuilder();
+		String line = "";
+		while((line = in.readLine()) != null) {
+			result.append(line);
+		}
+		in.close();
+		return result.toString();
 	}
 }

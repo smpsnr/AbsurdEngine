@@ -6,6 +6,11 @@ import android.app.Activity;
 import android.content.Context;
 
 /*{{ ANDROIDONLY*/
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.util.Enumeration;
+
 import android.content.DialogInterface;
 import android.widget.Toast;
 
@@ -34,8 +39,9 @@ public class DeviceUtility
 		DeviceUtility.context = context;
 	}
 	
-	public static void setLocalIp() throws InterruptedException {
-		postBlocking(new Runnable() {
+	public static void setLocalIp() {
+		localIp = getLocalIpImpl();
+		/*postBlocking(new Runnable() {
 			public void run() {
 				try {
 					localIp = WebUtils.getLocalIpAddress();
@@ -43,7 +49,7 @@ public class DeviceUtility
 					localIp = null;
 				}
 			}
-		});
+		});*/
 	}
 	
 	public static void setUserAgent() {
@@ -133,5 +139,26 @@ public class DeviceUtility
 	
 	/*{{ IOSONLY
 	private static native String getAdIdImpl();
+	/*}}*/
+	
+	/*{{ ANDROIDONLY*/
+	private static String getLocalIpImpl() {
+		try {
+			for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();) {
+				NetworkInterface intf = en.nextElement();
+				for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements();) {
+					InetAddress inetAddress = enumIpAddr.nextElement();
+					if (!inetAddress.isLoopbackAddress()) {
+						return inetAddress.getHostAddress().toString();
+					}
+				}
+			}
+		} catch (SocketException ex) {}
+		return null;
+	}
+	/*}}*/
+	
+	/*{{ IOSONLY
+	private static native String getLocalIpImpl();
 	/*}}*/
 }
