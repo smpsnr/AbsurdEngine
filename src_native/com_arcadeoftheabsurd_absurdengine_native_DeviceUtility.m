@@ -2,7 +2,10 @@
 #include "xmlvm.h"
 #include "com_arcadeoftheabsurd_absurdengine_DeviceUtility.h"
 
-#import "UIDevice+IdentifierAddition.h"
+//XMLVM_BEGIN_NATIVE_IMPLEMENTATION
+#include "org_xmlvm_iphone_NSString.h"
+#include "UIDevice+IdentifierAddition.h"
+//XMLVM_END_NATIVE_IMPLEMENTATION
 
 JAVA_OBJECT com_arcadeoftheabsurd_absurdengine_DeviceUtility_getAdIdImpl__()
 {
@@ -18,16 +21,11 @@ JAVA_OBJECT com_arcadeoftheabsurd_absurdengine_DeviceUtility_getLocalIpImpl__()
 	//XMLVM_BEGIN_NATIVE[com_arcadeoftheabsurd_absurdengine_DeviceUtility_getLocalIpImpl__]
 	NSString *IPAddressToReturn;
 
-	#if TARGET_IPHONE_SIMULATOR
-        IPAddressToReturn = [UIDevice localSimulatorIPAddress];
-	#else
-
     IPAddressToReturn = [UIDevice localWiFiIPAddress];
 
-    if(!IPAddressToReturn) {
+    if(IPAddressToReturn == NULL) {
         IPAddressToReturn = [UIDevice localCellularIPAddress];
     }
-	#endif
 	
 	return fromNSString(IPAddressToReturn);
 	//XMLVM_END_NATIVE
