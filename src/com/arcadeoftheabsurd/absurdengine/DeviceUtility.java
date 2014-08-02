@@ -9,8 +9,9 @@ import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.util.Enumeration;
 
+import org.OpenUDID.OpenUDID_manager;
+
 import android.content.DialogInterface;
-import android.widget.Toast;
 
 import com.google.android.gms.ads.identifier.AdvertisingIdClient;
 import com.google.android.gms.ads.identifier.AdvertisingIdClient.Info;
@@ -24,14 +25,23 @@ import com.google.android.gms.common.GooglePlayServicesUtil;
  */
 
 public class DeviceUtility 
-{
-	public static final int PLAY_DIALOG_REQUEST_CODE = 1;
-	
+{	
 	private static Context context;
 	
 	private static String localIp;
 	private static String userAgent;
 	private static String adId;
+	
+	private static final String DEFAULT_ADID = "00000000-0000-0000-0000-000000000000";
+	
+	/*{{ ANDROIDONLY*/
+	public static final int PLAY_DIALOG_REQUEST_CODE = 1;
+	private static final long UDID_TIMEOUT = 5000;
+	private static final long UDID_WAIT_INC = 20;
+	
+	private static boolean playServiceFailed = false;
+	private static boolean openUDIDServiceFailed = false;
+	/*}}*/
 		
 	public static void setDeviceContext(Context context) {
 		DeviceUtility.context = context;
@@ -92,20 +102,42 @@ public class DeviceUtility
     		if (GooglePlayServicesUtil.isUserRecoverableError(error)) {
     			GooglePlayServicesUtil.getErrorDialog(error, activity, PLAY_DIALOG_REQUEST_CODE, new DialogInterface.OnCancelListener() {
 					public void onCancel(DialogInterface dialog) {
-						Toast.makeText(context, "Google Play Services must be installed.", Toast.LENGTH_SHORT).show();
-						activity.finish();
+						playServiceFailed = true;
 					}
 				}).show();
     		} else {
-    			Toast.makeText(context, "Google Play Services reported the following error: " + GooglePlayServicesUtil.getErrorString(error), Toast.LENGTH_SHORT).show();
-    			activity.finish();
+    			playServiceFailed = true;
     		}
     	}
+    	/*}}*/
     	/*{{ IOSONLY
     	//nop
     	return;
     	/*}}*/
 	}
+	
+	/*{{ ANDROIDONLY*/	
+	private static void initOpenUDID() {
+		OpenUDID_manager.sync(context);
+		try {
+			postBlocking(new Runnable() {
+				@Override
+				public void run() {
+					long waitTimer = UDID_TIMEOUT;
+					while (!OpenUDID_manager.isInitialized() && waitTimer > 0) {
+						try {
+							Thread.sleep(UDID_WAIT_INC);
+							waitTimer -= UDID_WAIT_INC;
+						} catch (InterruptedException e) {}
+					}
+				}
+			});
+		} catch (InterruptedException e) {}
+		if (!OpenUDID_manager.isInitialized()) {
+			openUDIDServiceFailed = true;
+		}
+	}
+	/*}}*/
 	
 	static void postBlocking(Runnable r) throws InterruptedException {
 		Thread thread = new Thread(r);
@@ -115,13 +147,25 @@ public class DeviceUtility
 	
 	/*{{ ANDROIDONLY*/
 	private static String getAdIdImpl() {
-		Info adInfo = null;		
-		try {
-			adInfo = AdvertisingIdClient.getAdvertisingIdInfo(context);
-		} catch (Exception e) {
-			return null;
+		if (!playServiceFailed) {
+			Info adInfo = null;		
+			try {
+				adInfo = AdvertisingIdClient.getAdvertisingIdInfo(context);
+			} catch (Exception e) {
+				initOpenUDID();
+			}
+			if (adInfo.getId() != null) {
+				return adInfo.getId();
+			} else {
+				initOpenUDID();
+			}
 		}
-		return adInfo.getId();
+		if (!openUDIDServiceFailed) {
+			if (!(OpenUDID_manager.getOpenUDID() == null)) {
+				return OpenUDID_manager.getOpenUDID();
+			}
+		}
+		return DEFAULT_ADID;
 	}
 	/*}}*/
 	
