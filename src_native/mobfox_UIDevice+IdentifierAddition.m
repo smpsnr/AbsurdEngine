@@ -1,3 +1,8 @@
+/*
+ * From the MobFox iOS SDK (https://github.com/mobfox/MobFox-iOS-SDK)
+ * Used in AbsurdEngine under the MoPub Client License (see /MoPub_Client_License.txt)
+ */
+
 //
 //  UIDevice(Identifier).h
 //  UIDeviceAddition
@@ -7,8 +12,7 @@
 //
 //  With additional IP Address Lookup Code
 
-#import "UIDevice+IdentifierAddition.h"
-//#import "NSString+MobFox.h"
+#import "mobfox_UIDevice+IdentifierAddition.h"
 
 #include <sys/socket.h> // Per msqr
 #include <sys/sysctl.h>

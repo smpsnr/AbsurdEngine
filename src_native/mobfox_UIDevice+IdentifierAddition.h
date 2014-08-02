@@ -1,3 +1,8 @@
+/*
+ * From the MobFox iOS SDK (https://github.com/mobfox/MobFox-iOS-SDK)
+ * Used in AbsurdEngine under the MoPub Client License (see /MoPub_Client_License.txt)
+ */
+ 
 //
 //  UIDevice(Identifier).h
 //  UIDeviceAddition
