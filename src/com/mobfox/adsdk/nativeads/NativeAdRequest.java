@@ -1,10 +1,10 @@
-package com.adsdk.sdk.nativeads;
+package com.mobfox.adsdk.nativeads;
 
 import java.util.List;
 import java.util.Random;
 
-import com.adsdk.sdk.Const;
-import com.adsdk.sdk.Gender;
+import com.mobfox.adsdk.Const;
+import com.mobfox.adsdk.Gender;
 import com.arcadeoftheabsurd.absurdengine.DeviceUtility;
 
 public class NativeAdRequest 

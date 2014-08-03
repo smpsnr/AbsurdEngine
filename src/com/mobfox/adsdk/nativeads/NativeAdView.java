@@ -1,4 +1,4 @@
-package com.adsdk.sdk.nativeads;
+package com.mobfox.adsdk.nativeads;
 
 import java.io.IOException;
 import java.net.URI;
@@ -22,7 +22,7 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
-import com.adsdk.sdk.nativeads.NativeAd.Tracker;
+import com.mobfox.adsdk.nativeads.NativeAd.Tracker;
 
 @SuppressLint("ViewConstructor")
 public class NativeAdView extends FrameLayout 

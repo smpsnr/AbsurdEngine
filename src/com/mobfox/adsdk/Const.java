@@ -1,4 +1,4 @@
-package com.adsdk.sdk;
+package com.mobfox.adsdk;
 
 public interface Const
 {

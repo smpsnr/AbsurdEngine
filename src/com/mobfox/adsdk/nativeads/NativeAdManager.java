@@ -1,4 +1,4 @@
-package com.adsdk.sdk.nativeads;
+package com.mobfox.adsdk.nativeads;
 
 import java.util.List;
 
@@ -9,7 +9,7 @@ import android.os.Handler;
 import android.view.View;
 import android.view.View.OnClickListener;
 
-import com.adsdk.sdk.Gender;
+import com.mobfox.adsdk.Gender;
 import com.arcadeoftheabsurd.absurdengine.DeviceUtility;
 
 public class NativeAdManager 

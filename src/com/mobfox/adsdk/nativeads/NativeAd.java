@@ -1,4 +1,4 @@
-package com.adsdk.sdk.nativeads;
+package com.mobfox.adsdk.nativeads;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,14 +14,16 @@ public class NativeAd
 	private Map<String, String> textAssets = new HashMap<String, String>();
 	private List<Tracker> trackers = new ArrayList<NativeAd.Tracker>();
 	
-	public static class ImageAsset {
+	public static class ImageAsset 
+	{
 		String url;
 		Bitmap bitmap;
 		int width;
 		int height;
 	}
 
-	public static class Tracker {
+	public static class Tracker 
+	{
 		String type;
 		String url;
 	}

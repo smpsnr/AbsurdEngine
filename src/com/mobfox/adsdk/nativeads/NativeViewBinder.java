@@ -1,4 +1,4 @@
-package com.adsdk.sdk.nativeads;
+package com.mobfox.adsdk.nativeads;
 
 import java.util.HashMap;
 import java.util.Map;

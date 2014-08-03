@@ -1,4 +1,4 @@
-package com.adsdk.sdk.nativeads;
+package com.mobfox.adsdk.nativeads;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -22,10 +22,10 @@ import org.json.JSONObject;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
-import com.adsdk.sdk.Const;
-import com.adsdk.sdk.RequestException;
-import com.adsdk.sdk.nativeads.NativeAd.ImageAsset;
-import com.adsdk.sdk.nativeads.NativeAd.Tracker;
+import com.mobfox.adsdk.Const;
+import com.mobfox.adsdk.RequestException;
+import com.mobfox.adsdk.nativeads.NativeAd.ImageAsset;
+import com.mobfox.adsdk.nativeads.NativeAd.Tracker;
 
 public class RequestNativeAd 
 {
