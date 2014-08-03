@@ -5,23 +5,16 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.Iterator;
+import java.net.URLConnection;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.params.HttpConnectionParams;
-import org.apache.http.params.HttpProtocolParams;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import android.content.Context;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-
+import com.arcadeoftheabsurd.absurdengine.BitmapTempFileHolder;
+import com.eclipsesource.json.JsonArray;
+import com.eclipsesource.json.JsonObject;
+import com.eclipsesource.json.JsonValue;
+import com.eclipsesource.json.ParseException;
 import com.mobfox.adsdk.Const;
 import com.mobfox.adsdk.RequestException;
 import com.mobfox.adsdk.nativeads.NativeAd.ImageAsset;
@@ -29,32 +22,23 @@ import com.mobfox.adsdk.nativeads.NativeAd.Tracker;
 
 public class RequestNativeAd 
 {
+	private Context context;
+	
+	public RequestNativeAd(Context context) {
+		this.context = context;
+	}
+	
 	public NativeAd sendRequest(NativeAdRequest request) throws RequestException {
-		String url = request.toString();
-		DefaultHttpClient client = new DefaultHttpClient();
-		HttpConnectionParams.setSoTimeout(client.getParams(), Const.SOCKET_TIMEOUT);
-		HttpConnectionParams.setConnectionTimeout(client.getParams(), Const.CONNECTION_TIMEOUT);
-		HttpProtocolParams.setUserAgent(client.getParams(), request.getUserAgent());
-		HttpGet get = new HttpGet(url);
-		get.setHeader("User-Agent", System.getProperty("http.agent"));
-		HttpResponse response;
 		try {
-			response = client.execute(get);
-			int responseCode = response.getStatusLine().getStatusCode();
-			if (responseCode == HttpURLConnection.HTTP_OK) {
-				return parse(response.getEntity().getContent());
-			} else {
-				throw new RequestException("Server Error. Response code:" + responseCode);
-			}
-		} catch (RequestException e) {
-			throw e;
-		} catch (ClientProtocolException e) {
-			throw new RequestException("Error in HTTP request", e);
+			URL url = new URL(request.toString());
+			URLConnection conn = url.openConnection();
+			conn.setConnectTimeout(Const.CONNECTION_TIMEOUT);
+			conn.setRequestProperty("User-Agent", request.getUserAgent());
+			return parse(conn.getInputStream());	
 		} catch (IOException e) {
-			throw new RequestException("Error in HTTP request", e);
-		} catch (Throwable t) {
-			throw new RequestException("Error in HTTP request", t);
+
 		}
+		throw new RequestException("done goofed");
 	}
 
 	protected NativeAd parse(final InputStream inputStream) throws RequestException {
@@ -69,67 +53,63 @@ public class RequestNativeAd
 				sb.append(line + "\n");
 			}
 			String result = sb.toString();
-			JSONObject mainObject = new JSONObject(result);
-			JSONObject imageAssetsObject = mainObject.optJSONObject("imageassets");
-			if (imageAssetsObject != null) {
-				@SuppressWarnings("unchecked")
-				Iterator<String> keys = imageAssetsObject.keys();
+						
+			JsonObject mainObject = JsonObject.readFrom(result);
+			JsonValue imageAssetsValue = mainObject.get("imageassets");
+			
+			if (imageAssetsValue != null) {
+				JsonObject imageAssetsObject = imageAssetsValue.asObject();
 
-				while (keys.hasNext()) {
+				for (String type : imageAssetsObject.names()) {					
 					ImageAsset asset = new ImageAsset();
-					String type = keys.next();
-					JSONObject assetObject = imageAssetsObject.getJSONObject(type);
-					String url = assetObject.getString("url");
+					
+					JsonObject assetObject = imageAssetsObject.get(type).asObject();
+					String url = assetObject.get("url").asString();
+					
 					asset.url = url;
-					asset.bitmap = loadBitmap(url);
-					asset.width = assetObject.getInt("width");
-					asset.height = assetObject.getInt("height");
+					asset.width = Integer.parseInt(assetObject.get("width").asString());
+					asset.height = Integer.parseInt(assetObject.get("height").asString());
+					asset.bitmapHolder = BitmapTempFileHolder.fromUrl(url, asset.width, asset.height, context);
+					
 					response.addImageAsset(type, asset);
 				}
 			}
-
-			JSONObject textAssetsObject = mainObject.optJSONObject("textassets");
-			if (textAssetsObject != null) {
-				@SuppressWarnings("unchecked")
-				Iterator<String> keys = textAssetsObject.keys();
-				while (keys.hasNext()) {
-					String type = keys.next();
-					String text = textAssetsObject.getString(type);
+			JsonValue textAssetsValue = mainObject.get("textassets");
+			
+			if (textAssetsValue != null) {
+				JsonObject textAssetsObject = textAssetsValue.asObject();
+				
+				for (String type : textAssetsObject.names()) {					
+					String text = textAssetsObject.get(type).asString();
 					response.addTextAsset(type, text);
 				}
 			}
-			response.setClickUrl(mainObject.optString("click_url", null));
+			response.setClickUrl(mainObject.get("click_url").asString());
 
-			JSONArray trackersArray = mainObject.optJSONArray("trackers");
-			if (trackersArray != null) {
-				for (int i = 0; i < trackersArray.length(); i++) {
-					JSONObject trackerObject = trackersArray.optJSONObject(i);
-					if(trackerObject != null) {
+			JsonValue trackersValue = mainObject.get("trackers");
+			
+			if (trackersValue != null) {
+				JsonArray trackersArray = trackersValue.asArray();
+				
+				for (int i = 0; i < trackersArray.size(); i++) {
+					JsonValue trackerValue = trackersArray.get(i);
+					
+					if(trackerValue != null) {
+						JsonObject trackerObject = trackerValue.asObject();
 						Tracker tracker = new Tracker();
-						tracker.type = trackerObject.getString("type");
-						tracker.url = trackerObject.getString("url");
+						tracker.type = trackerObject.get("type").asString();
+						tracker.url = trackerObject.get("url").asString();
 						response.getTrackers().add(tracker);
 					}
 				}
 			}
-
 		} catch (UnsupportedEncodingException e) {
 			throw new RequestException("Cannot parse Response", e);
 		} catch (IOException e) {
 			throw new RequestException("Cannot parse Response", e);
-		} catch (JSONException e) {
+		} catch (ParseException e) {
 			throw new RequestException("Cannot parse Response", e);
 		}
 		return response;
-	}
-	
-	private Bitmap loadBitmap (String url) {
-		Bitmap bitmap = null;
-		try {
-			InputStream in = new URL(url).openStream();
-			bitmap = BitmapFactory.decodeStream(in);
-		} catch (Exception e) {
-		}
-		return bitmap;
 	}
 }

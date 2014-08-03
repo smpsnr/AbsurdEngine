@@ -78,6 +78,12 @@ public abstract class GameView extends View implements Observer
     	return bitmapId;
     }
     
+    protected int loadBitmapHolder(BitmapHolder holder) {
+    	int bitmapId = bitmapStorage.size();
+    	bitmapStorage.add(holder);
+    	return bitmapId;
+    }
+    
     protected int loadTempBitmapFile(String filePath, String fileName, Vector2d initialSize) {
     	int bitmapId = bitmapStorage.size();
     	bitmapStorage.add(new BitmapTempFileHolder(

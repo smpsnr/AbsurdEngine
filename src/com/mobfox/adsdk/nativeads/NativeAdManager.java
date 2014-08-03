@@ -46,7 +46,7 @@ public class NativeAdManager
 		Thread requestThread = new Thread(new Runnable() {
 			public void run() {
 				final RequestNativeAd requestAd;
-				requestAd = new RequestNativeAd();
+				requestAd = new RequestNativeAd(context);
 				try {
 					nativeAd = requestAd.sendRequest(NativeAdManager.this.getRequest());
 					if (nativeAd != null) {

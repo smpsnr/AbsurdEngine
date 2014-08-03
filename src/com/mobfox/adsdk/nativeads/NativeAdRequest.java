@@ -1,5 +1,7 @@
 package com.mobfox.adsdk.nativeads;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.List;
 import java.util.Random;
 
@@ -52,7 +54,12 @@ public class NativeAdRequest
 			}
 		}
 		b.append("&s=" + this.getPublisherId());
-		b.append("&u=" + this.getUserAgent());
+		
+		try {
+			b.append("&u=" + URLEncoder.encode(this.getUserAgent(), "UTF-8"));
+		} catch (UnsupportedEncodingException e) {
+			b.append("&u=" + URLEncoder.encode(this.getUserAgent()));
+		}
 		b.append("&r_random=" + Integer.toString(random));
 
 		if (DeviceUtility.isIOS()) {
@@ -74,8 +81,6 @@ public class NativeAdRequest
 				b.append(i < keywords.size() - 1 ? keywords.get(i) + "," : keywords.get(i));
 			}
 		}
-		b.append("&u_wv=" + this.getUserAgent());
-		b.append("&u_br=" + this.getUserAgent());
 		if (longitude != 0 && latitude != 0) {
 			b.append("&longitude=" + Double.toString(longitude));
 			b.append("&latitude=" + Double.toString(latitude));
