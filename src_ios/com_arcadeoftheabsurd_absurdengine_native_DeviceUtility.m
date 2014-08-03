@@ -12,11 +12,16 @@
 JAVA_OBJECT com_arcadeoftheabsurd_absurdengine_DeviceUtility_getAdIdImpl__()
 {
 	//XMLVM_BEGIN_NATIVE[com_arcadeoftheabsurd_absurdengine_DeviceUtility_getAdIdImpl__]
+	NSString* adId;
 	if (!NSClassFromString(@"ASIdentifierManager")) {
-        return [OpenUDID value];
+        adId = [OpenUDID value];
+    } else {
+    	adId = [[[ASIdentifierManager sharedManager] advertisingIdentifier] UUIDString];
     }
-    NSString* adId = [[[ASIdentifierManager sharedManager] advertisingIdentifier] UUIDString];
-    return fromNSString(adId);
+    if (adId != NULL) {
+    	return fromNSString(adId);
+    }
+    return com_arcadeoftheabsurd_absurdengine_DeviceUtility_GET_DEFAULT_AD_ID();
 	//XMLVM_END_NATIVE
 }
 

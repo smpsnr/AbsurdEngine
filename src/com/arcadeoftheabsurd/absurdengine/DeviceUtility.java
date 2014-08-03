@@ -17,7 +17,7 @@ import com.google.android.gms.ads.identifier.AdvertisingIdClient;
 import com.google.android.gms.ads.identifier.AdvertisingIdClient.Info;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
-/*}}
+/*}}*/
 
 /**
  * Provides device specific utilities
@@ -32,10 +32,10 @@ public class DeviceUtility
 	private static String userAgent;
 	private static String adId;
 	
-	private static final String DEFAULT_ADID = "00000000-0000-0000-0000-000000000000";
+	private static final String DEFAULT_AD_ID = "00000000-0000-0000-0000-000000000000";
 	
 	/*{{ ANDROIDONLY*/
-	public static final int PLAY_DIALOG_REQUEST_CODE = 1;
+	private static final int PLAY_DIALOG_CODE = 1;
 	private static final long UDID_TIMEOUT = 5000;
 	private static final long UDID_WAIT_INC = 20;
 	
@@ -56,11 +56,11 @@ public class DeviceUtility
 	}
 	
 	public static void setAdId() throws InterruptedException {
-		postBlocking(new Runnable() {
-			public void run() {
+		//postBlocking(new Runnable() {
+			//public void run() {
 				adId = getAdIdImpl();
-			}
-		});
+			//}
+		//});
 	}
 	
 	public static String getLocalIp() {
@@ -100,7 +100,7 @@ public class DeviceUtility
 		int error = GooglePlayServicesUtil.isGooglePlayServicesAvailable(context);
     	if (error != ConnectionResult.SUCCESS) {
     		if (GooglePlayServicesUtil.isUserRecoverableError(error)) {
-    			GooglePlayServicesUtil.getErrorDialog(error, activity, PLAY_DIALOG_REQUEST_CODE, new DialogInterface.OnCancelListener() {
+    			GooglePlayServicesUtil.getErrorDialog(error, activity, PLAY_DIALOG_CODE, new DialogInterface.OnCancelListener() {
 					public void onCancel(DialogInterface dialog) {
 						playServiceFailed = true;
 					}
@@ -165,7 +165,7 @@ public class DeviceUtility
 				return OpenUDID_manager.getOpenUDID();
 			}
 		}
-		return DEFAULT_ADID;
+		return DEFAULT_AD_ID;
 	}
 	/*}}*/
 	
