@@ -7,6 +7,7 @@ import java.util.Random;
 
 import com.mobfox.adsdk.Const;
 import com.mobfox.adsdk.Gender;
+
 import com.arcadeoftheabsurd.absurdengine.DeviceUtility;
 
 public class NativeAdRequest 
@@ -17,20 +18,21 @@ public class NativeAdRequest
 	private static final String TEXT_TYPES = "headline,description,cta,advertiser,rating";
 	private static final String REQUEST_TYPE_ANDROID = "android_app";
 	private static final String REQUEST_TYPE_IPHONE = "iphone_app";
-	private  String request_url;
+	
 	private List<String> adTypes;
 	private String publisherId;
 	private String userAgent;
 	private String adId;
 	private String protocolVersion;
-
 	private double longitude = 0.0;
 	private double latitude = 0.0;
-
 	private Gender gender;
 	private int userAge;
 	private List<String> keywords;
+	
+	private String request_url;
 
+	@SuppressWarnings("deprecation")
 	public String toString() {
 		final StringBuilder b = new StringBuilder(request_url);
 		
@@ -56,7 +58,7 @@ public class NativeAdRequest
 		b.append("&s=" + this.getPublisherId());
 		
 		try {
-			b.append("&u=" + URLEncoder.encode(this.getUserAgent(), "UTF-8"));
+			b.append("&u=" + URLEncoder.encode(this.getUserAgent(), Const.ENCODING));
 		} catch (UnsupportedEncodingException e) {
 			b.append("&u=" + URLEncoder.encode(this.getUserAgent()));
 		}
@@ -105,8 +107,9 @@ public class NativeAdRequest
 	}
 
 	public String getUserAgent() {
-		if (this.userAgent == null)
+		if (this.userAgent == null) {
 			return "";
+		}
 		return this.userAgent;
 	}
 
@@ -123,10 +126,10 @@ public class NativeAdRequest
 	}
 
 	public String getProtocolVersion() {
-		if (this.protocolVersion == null)
+		if (this.protocolVersion == null) {
 			return Const.VERSION;
-		else
-			return this.protocolVersion;
+		}
+		return this.protocolVersion;
 	}
 
 	public void setProtocolVersion(String protocolVersion) {

@@ -4,17 +4,17 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLConnection;
 
 import android.content.Context;
 
 import com.arcadeoftheabsurd.absurdengine.BitmapTempFileHolder;
+
 import com.eclipsesource.json.JsonArray;
 import com.eclipsesource.json.JsonObject;
 import com.eclipsesource.json.JsonValue;
-import com.eclipsesource.json.ParseException;
+
 import com.mobfox.adsdk.Const;
 import com.mobfox.adsdk.RequestException;
 import com.mobfox.adsdk.nativeads.NativeAd.ImageAsset;
@@ -32,20 +32,18 @@ public class RequestNativeAd
 		try {
 			URL url = new URL(request.toString());
 			URLConnection conn = url.openConnection();
-			conn.setConnectTimeout(Const.CONNECTION_TIMEOUT);
 			conn.setRequestProperty("User-Agent", request.getUserAgent());
 			return parse(conn.getInputStream());	
 		} catch (IOException e) {
-
+			throw new RequestException("Error sending ad request", e);
 		}
-		throw new RequestException("done goofed");
 	}
 
 	protected NativeAd parse(final InputStream inputStream) throws RequestException {
 		final NativeAd response = new NativeAd();
 		try {
 			BufferedReader reader;
-			reader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"), 8);
+			reader = new BufferedReader(new InputStreamReader(inputStream, Const.ENCODING), 8);
 			StringBuilder sb = new StringBuilder();
 
 			String line = null;
@@ -103,11 +101,7 @@ public class RequestNativeAd
 					}
 				}
 			}
-		} catch (UnsupportedEncodingException e) {
-			throw new RequestException("Cannot parse Response", e);
 		} catch (IOException e) {
-			throw new RequestException("Cannot parse Response", e);
-		} catch (ParseException e) {
 			throw new RequestException("Cannot parse Response", e);
 		}
 		return response;

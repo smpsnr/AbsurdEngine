@@ -1,5 +1,6 @@
 package com.mobfox.adsdk.nativeads;
 
+import java.lang.Thread.UncaughtExceptionHandler;
 import java.util.List;
 
 import android.content.Context;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 
 import com.mobfox.adsdk.Gender;
+
 import com.arcadeoftheabsurd.absurdengine.DeviceUtility;
 
 public class NativeAdManager 
@@ -32,13 +34,14 @@ public class NativeAdManager
 
 	public NativeAdManager(Context context, String requestUrl, String publisherId, NativeAdListener listener, List<String> adTypes) {
 		if ((publisherId == null) || (publisherId.length() == 0)) {
-			throw new IllegalArgumentException("User Id cannot be null or empty");
+			throw new IllegalArgumentException("Publisher ID cannot be null or empty");
 		}
 		this.context = context;
 		this.requestUrl = requestUrl;
 		this.publisherId = publisherId;
 		this.listener = listener;
 		this.adTypes = adTypes;
+		
 		handler = new Handler();
 	}
 
@@ -59,19 +62,14 @@ public class NativeAdManager
 				}
 			}
 		});
-		/*requestThread.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
-			public void uncaughtException(final Thread thread, final Throwable ex) {
-				//Log.e(Const.TAG, "Exception in request thread", ex);
-			}
-		});*/
 		requestThread.start();
 	}
 
 	private NativeAdRequest getRequest() {
 		if (this.request == null) {
 			this.request = new NativeAdRequest();
+			this.request.setPublisherId(publisherId);
 			this.request.setAdId(DeviceUtility.getAdId());
-			this.request.setPublisherId(this.publisherId);
 			this.request.setUserAgent(DeviceUtility.getUserAgent());
 		}
 		request.setRequestUrl(requestUrl);
@@ -84,13 +82,13 @@ public class NativeAdManager
 		return this.request;
 	}
 
-	public NativeAdView getNativeAdView(NativeAd ad, NativeViewBinder binder) {
+	/*public NativeAdView getNativeAdView(NativeAd ad, NativeViewBinder binder) {
 		NativeAdView view = new NativeAdView(context, ad, binder, listener);
 		if (ad != null) {
 			view.setOnClickListener(createOnNativeAdClickListener(ad.getClickUrl()));
 		}
 		return view;
-	}
+	}*/
 
 	private OnClickListener createOnNativeAdClickListener(final String clickUrl) {
 		OnClickListener clickListener = new OnClickListener() {
