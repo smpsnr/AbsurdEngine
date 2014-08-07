@@ -5,6 +5,7 @@ import com.arcadeoftheabsurd.absurdengine.GameView.GameLoadListener;
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.View;
 
 /**
  * Entry point for Absurd Engine games. Maintains a RunnerThread that calls updateGame FPS times per second,
@@ -16,9 +17,10 @@ public abstract class GameActivity extends Activity implements GameLoadListener
 {    
     private RunnerThread gameRunner;
     private Handler gameHandler;
+    private GameView game;
     
-    protected GameView game;  
-    protected abstract void initializeGame();
+    protected abstract GameView initializeGame();
+    protected abstract View initializeContentView();
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,13 +53,13 @@ public abstract class GameActivity extends Activity implements GameLoadListener
         }
     }
     
-    protected final void loadGame() {
+    protected final void loadContent() {
     	gameHandler.post (
             new Runnable() {
                 public void run() {
                 	// post to UI thread
-                 	initializeGame();
-                 	setContentView(game);
+                 	game = initializeGame();
+                 	setContentView(initializeContentView());
                 }
             }
         );
