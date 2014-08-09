@@ -34,7 +34,7 @@ public class BitmapTempFileHolder extends BitmapHolder
 	}
 
 	@Override
-	void initialize() {
+	public void initialize() {
 		super.initialize();
 		context.deleteFile(tempFileName);
 	}

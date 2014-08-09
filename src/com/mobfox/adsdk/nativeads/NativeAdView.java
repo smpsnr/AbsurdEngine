@@ -10,98 +10,85 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
+import android.graphics.Color;
 import android.os.AsyncTask;
-import android.os.Handler;
-import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.arcadeoftheabsurd.absurdengine.BitmapTempFileHolder;
+import com.arcadeoftheabsurd.j_utils.Vector2d;
 import com.mobfox.adsdk.nativeads.NativeAd.Tracker;
 
-@SuppressLint("ViewConstructor")
 public class NativeAdView extends FrameLayout 
 {
+	private Context context;
 	private boolean impressionReported;
-	private View adView;
-	private NativeAdListener listener;
-	private Handler handler;
+	private NativeBanner bannerView;
 	private List<Tracker> trackers;
+	
+	public class NativeBanner extends RelativeLayout 
+	{
+		ImageView iconView;
+		TextView descriptionView;
+		LayoutParams iconLayout, descriptionLayout; 
+		
+		public NativeBanner(Context context, Bitmap bitmap, String description) {
+			super(context);
 
-	public NativeAdView(Context context, NativeAd ad, NativeViewBinder binder, NativeAdListener listener) {
+			iconView = new ImageView(context);
+			iconView.setImageBitmap(bitmap);
+			iconLayout = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+			iconLayout.addRule(ALIGN_PARENT_LEFT);
+			
+			descriptionView = new TextView(context);
+			descriptionView.setText(description);
+			descriptionView.setTextColor(Color.WHITE);
+			descriptionLayout = new LayoutParams(NativeAdView.this.getWidth() - bitmap.getWidth(), NativeAdView.this.getHeight());
+			descriptionLayout.addRule(CENTER_VERTICAL);
+			descriptionLayout.addRule(ALIGN_PARENT_RIGHT);
+			
+			addView(iconView, iconLayout);
+			addView(descriptionView, descriptionLayout);
+		}
+	}
+
+	public NativeAdView(Context context) {
 		super(context);
-		if (ad == null || binder == null) {
-			return;
+		this.context = context;
+	}
+	
+	public void setAd(NativeAd ad) {
+		if (bannerView != null) {
+			this.removeView(bannerView);
 		}
-		adView = inflate(context, binder.getAdLayoutId(), null);
-		trackers = ad.getTrackers();
-		handler = new Handler();
-		this.listener = listener;
-		fillAdView(ad, binder);
-		this.addView(adView);
+		BitmapTempFileHolder bitmapHolder = ad.getImageAsset("icon").bitmapHolder;
+		bitmapHolder.initialize();
+		
+		bannerView = new NativeBanner(context, bitmapHolder.bitmap, ad.getTextAsset("description"));
+		this.addView(bannerView);
 	}
 
-	public void fillAdView(NativeAd ad, NativeViewBinder binder) {
-		for (String key : binder.getTextAssetsBindingsKeySet()) {
-			int resId = binder.getIdForTextAsset(key);
-			if (resId == 0) {
-				continue;
-			}
-			try {
-				if (key.equals("rating")) { // rating is special, not displayed as normal text view.
-					RatingBar bar = (RatingBar) adView.findViewById(resId);
-					if (bar != null) {
-						int rating = Integer.parseInt(ad.getTextAsset(key));
-						bar.setIsIndicator(true);
-						bar.setRating(rating);
-					}
-				} else {
-					TextView view = (TextView) adView.findViewById(resId);
-					String text = ad.getTextAsset(key);
-					if (view != null && text != null) {
-						view.setText(text);
-					}
-				}
-			} catch (ClassCastException e) {}
-		}
-
-		for (String key : binder.getImageAssetsBindingsKeySet()) {
-			int resId = binder.getIdForImageAsset(key);
-			if (resId == 0) {
-				continue;
-			}
-			try {
-				ImageView view = (ImageView) adView.findViewById(resId);
-				Bitmap imageBitmap = ad.getImageAsset(key).bitmap;
-				if (view != null && imageBitmap != null) {
-					view.setImageBitmap(imageBitmap);
-				}
-			} catch (ClassCastException e) {}
-		}
-
-	}
-
-	@Override
+	/*@Override
 	protected void dispatchDraw(Canvas canvas) {
-		if (!impressionReported) {
-			impressionReported = true;
-			notifyImpression();
+		if (trackers != null) {
+			if (!impressionReported) {
+				impressionReported = true;
 
-			for (Tracker t : trackers) {
-				if (t.type.equals("impression")) {
-					trackImpression(t.url);
+				for (Tracker t : trackers) {
+					if (t.type.equals("impression")) {
+						trackImpression(t.url);
+					}
 				}
 			}
 		}
 		super.dispatchDraw(canvas);
-	}
+	}*/
 
-	private void notifyImpression() {
+	/*private void notifyImpression() {
 		if (listener != null) {
 			handler.post(new Runnable() {
 				public void run() {
@@ -109,7 +96,7 @@ public class NativeAdView extends FrameLayout
 				}
 			});
 		}
-	}
+	}*/
 
 	private void trackImpression(final String url) {
 		AsyncTask<Void, Void, Void> task = new AsyncTask<Void, Void, Void>() {
