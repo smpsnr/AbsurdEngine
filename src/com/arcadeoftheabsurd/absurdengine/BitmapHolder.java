@@ -12,7 +12,7 @@ import com.arcadeoftheabsurd.j_utils.Vector2d;
 
 class BitmapHolder
 {
-	Bitmap bitmap;
+	public Bitmap bitmap;
 	boolean initialized = false;
 	
 	private Vector2d initialSize;

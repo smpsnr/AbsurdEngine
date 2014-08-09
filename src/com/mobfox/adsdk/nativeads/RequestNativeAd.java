@@ -10,11 +10,10 @@ import java.net.URLConnection;
 import android.content.Context;
 
 import com.arcadeoftheabsurd.absurdengine.BitmapTempFileHolder;
-
+import com.arcadeoftheabsurd.j_utils.Vector2d;
 import com.eclipsesource.json.JsonArray;
 import com.eclipsesource.json.JsonObject;
 import com.eclipsesource.json.JsonValue;
-
 import com.mobfox.adsdk.Const;
 import com.mobfox.adsdk.RequestException;
 import com.mobfox.adsdk.nativeads.NativeAd.ImageAsset;
@@ -30,16 +29,18 @@ public class RequestNativeAd
 	
 	public NativeAd sendRequest(NativeAdRequest request) throws RequestException {
 		try {
+			System.out.println(request.toString());
 			URL url = new URL(request.toString());
 			URLConnection conn = url.openConnection();
 			conn.setRequestProperty("User-Agent", request.getUserAgent());
-			return parse(conn.getInputStream());	
+			System.out.println("sending ad request");
+			return parse(conn.getInputStream(), request);	
 		} catch (IOException e) {
 			throw new RequestException("Error sending ad request", e);
 		}
 	}
 
-	protected NativeAd parse(final InputStream inputStream) throws RequestException {
+	protected NativeAd parse(final InputStream inputStream, final NativeAdRequest request) throws RequestException {
 		final NativeAd response = new NativeAd();
 		try {
 			BufferedReader reader;
@@ -51,6 +52,8 @@ public class RequestNativeAd
 				sb.append(line + "\n");
 			}
 			String result = sb.toString();
+			
+			System.out.println("parsing result");
 						
 			JsonObject mainObject = JsonObject.readFrom(result);
 			JsonValue imageAssetsValue = mainObject.get("imageassets");
@@ -58,18 +61,27 @@ public class RequestNativeAd
 			if (imageAssetsValue != null) {
 				JsonObject imageAssetsObject = imageAssetsValue.asObject();
 
-				for (String type : imageAssetsObject.names()) {					
-					ImageAsset asset = new ImageAsset();
-					
-					JsonObject assetObject = imageAssetsObject.get(type).asObject();
-					String url = assetObject.get("url").asString();
-					
-					asset.url = url;
-					asset.width = Integer.parseInt(assetObject.get("width").asString());
-					asset.height = Integer.parseInt(assetObject.get("height").asString());
-					asset.bitmapHolder = BitmapTempFileHolder.fromUrl(url, asset.width, asset.height, context);
-					
-					response.addImageAsset(type, asset);
+				for (String type : imageAssetsObject.names()) {	
+					if (request.getImageAssets().containsKey(type)) {
+						ImageAsset asset = new ImageAsset();
+						
+						JsonObject assetObject = imageAssetsObject.get(type).asObject();
+						String url = assetObject.get("url").asString();
+						
+						asset.url = url;
+						
+						asset.width = Integer.parseInt(assetObject.get("width").asString());
+						asset.height = Integer.parseInt(assetObject.get("height").asString());
+						
+						if(request.getImageAssets() != null) {
+							Vector2d assetSize = request.getImageAssets().get(type);
+							asset.bitmapHolder = BitmapTempFileHolder.fromUrl(url, assetSize.x, assetSize.y, context);
+						} else {
+							asset.bitmapHolder = BitmapTempFileHolder.fromUrl(url, asset.width, asset.height, context);
+						}
+						
+						response.addImageAsset(type, asset);
+					}
 				}
 			}
 			JsonValue textAssetsValue = mainObject.get("textassets");
