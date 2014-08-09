@@ -3,15 +3,18 @@ package com.mobfox.adsdk.nativeads;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import com.mobfox.adsdk.Const;
 import com.mobfox.adsdk.Gender;
 
 import com.arcadeoftheabsurd.absurdengine.DeviceUtility;
+import com.arcadeoftheabsurd.j_utils.Vector2d;
 
 public class NativeAdRequest 
 {
+	private static final String REQUEST_URL = "http://my.mobfox.com/request.php";
 	private static final String REQUEST_TYPE = "native";
 	private static final String RESPONSE_TYPE = "json";
 	private static final String IMAGE_TYPES = "icon,main";
@@ -20,6 +23,8 @@ public class NativeAdRequest
 	private static final String REQUEST_TYPE_IPHONE = "iphone_app";
 	
 	private List<String> adTypes;
+	private List<String> keywords;
+	private Map<String, Vector2d> imageAssets;
 	private String publisherId;
 	private String userAgent;
 	private String adId;
@@ -28,13 +33,10 @@ public class NativeAdRequest
 	private double latitude = 0.0;
 	private Gender gender;
 	private int userAge;
-	private List<String> keywords;
 	
-	private String request_url;
-
 	@SuppressWarnings("deprecation")
 	public String toString() {
-		final StringBuilder b = new StringBuilder(request_url);
+		final StringBuilder b = new StringBuilder(REQUEST_URL);
 		
 		Random r = new Random();
 		int random = r.nextInt(50000);
@@ -46,7 +48,17 @@ public class NativeAdRequest
 		}
 		b.append("&r_type=" + REQUEST_TYPE);
 		b.append("&r_resp=" + RESPONSE_TYPE);
-		b.append("&n_img=" + IMAGE_TYPES);
+		
+		if (imageAssets == null) {
+			b.append("&n_img=" + IMAGE_TYPES);
+		}
+		else {
+			Object[] imageTypes = imageAssets.keySet().toArray();
+			b.append("&n_img=");
+			for(int i = 0; i < imageTypes.length; i++) {
+				b.append(i < imageTypes.length - 1 ? imageTypes[i] + "," : imageTypes[i]);
+			}
+		}
 		b.append("&n_txt=" + TEXT_TYPES);
 		
 		if (adTypes != null) {
@@ -96,6 +108,14 @@ public class NativeAdRequest
 
 	public void setAdTypes(List<String> adTypes) {
 		this.adTypes = adTypes;
+	}
+	
+	public Map<String, Vector2d> getImageAssets() {
+		return imageAssets;
+	}
+	
+	public void setImageAssets(Map<String, Vector2d> imageAssets) {
+		this.imageAssets = imageAssets;
 	}
 
 	public String getPublisherId() {
@@ -174,9 +194,5 @@ public class NativeAdRequest
 	
 	public void setKeywords(List<String> keywords) {
 		this.keywords = keywords;
-	}
-	
-	public void setRequestUrl (String url) {
-		this.request_url = url;
 	}
 }

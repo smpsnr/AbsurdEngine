@@ -1,46 +1,40 @@
 package com.mobfox.adsdk.nativeads;
 
-import java.lang.Thread.UncaughtExceptionHandler;
 import java.util.List;
+import java.util.Map;
 
 import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Handler;
-import android.view.View;
-import android.view.View.OnClickListener;
-
-import com.mobfox.adsdk.Gender;
 
 import com.arcadeoftheabsurd.absurdengine.DeviceUtility;
+import com.arcadeoftheabsurd.j_utils.Vector2d;
+import com.mobfox.adsdk.Gender;
+import com.mobfox.adsdk.RequestException;
 
 public class NativeAdManager 
 {
+	private Context context;
+	private NativeAdListener listener;
+	private Handler handler;
+	private NativeAdRequest request;
+	
 	private NativeAd nativeAd;
 	private String publisherId;
 	private Gender userGender;
 	private int userAge;
 	private List<String> keywords;
-
-	private NativeAdListener listener;
-
-	private Context context;
-	private NativeAdRequest request;
-
-	private String requestUrl;
-	private Handler handler;
-
 	private List<String> adTypes;
-
-	public NativeAdManager(Context context, String requestUrl, String publisherId, NativeAdListener listener, List<String> adTypes) {
+	private Map<String, Vector2d> imageAssets;
+	
+	public NativeAdManager(Context context, NativeAdListener listener, String publisherId, List<String> adTypes, Map<String, Vector2d> imageAssets) {
 		if ((publisherId == null) || (publisherId.length() == 0)) {
 			throw new IllegalArgumentException("Publisher ID cannot be null or empty");
 		}
 		this.context = context;
-		this.requestUrl = requestUrl;
 		this.publisherId = publisherId;
 		this.listener = listener;
 		this.adTypes = adTypes;
+		this.imageAssets = imageAssets;
 		
 		handler = new Handler();
 	}
@@ -57,7 +51,7 @@ public class NativeAdManager
 					} else {
 						notifyAdFailed();
 					}
-				} catch (final Throwable e) {
+				} catch (final RequestException e) {
 					notifyAdFailed();
 				}
 			}
@@ -72,35 +66,14 @@ public class NativeAdManager
 			this.request.setAdId(DeviceUtility.getAdId());
 			this.request.setUserAgent(DeviceUtility.getUserAgent());
 		}
-		request.setRequestUrl(requestUrl);
 		request.setAdTypes(adTypes);
 		request.setGender(userGender);
 		request.setUserAge(userAge);
 		request.setAdTypes(adTypes);
 		request.setKeywords(keywords);
+		request.setImageAssets(imageAssets);
 
 		return this.request;
-	}
-
-	/*public NativeAdView getNativeAdView(NativeAd ad, NativeViewBinder binder) {
-		NativeAdView view = new NativeAdView(context, ad, binder, listener);
-		if (ad != null) {
-			view.setOnClickListener(createOnNativeAdClickListener(ad.getClickUrl()));
-		}
-		return view;
-	}*/
-
-	private OnClickListener createOnNativeAdClickListener(final String clickUrl) {
-		OnClickListener clickListener = new OnClickListener() {
-			public void onClick(View v) {
-				notifyAdClicked();
-				if (clickUrl != null && !clickUrl.equals("")) {
-					final Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(clickUrl));
-					context.startActivity(intent);
-				}
-			}
-		};
-		return clickListener;
 	}
 
 	private void notifyAdLoaded(final NativeAd ad) {
@@ -118,16 +91,6 @@ public class NativeAdManager
 			handler.post(new Runnable() {
 				public void run() {
 					listener.adFailedToLoad();
-				}
-			});
-		}
-	}
-
-	private void notifyAdClicked() {
-		if (listener != null) {
-			handler.post(new Runnable() {
-				public void run() {
-					listener.adClicked();
 				}
 			});
 		}
