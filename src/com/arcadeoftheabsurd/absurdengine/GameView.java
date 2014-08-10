@@ -2,7 +2,6 @@ package com.arcadeoftheabsurd.absurdengine;
 
 import android.content.Context;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.view.View;
 import java.util.ArrayList;
@@ -91,39 +90,4 @@ public abstract class GameView extends View implements Observer
     			initialSize.x, initialSize.y, fileName, getContext()));
     	return bitmapId;
     }
-    
-    protected void drawSprite(Canvas canvas, Sprite sprite) {
-    	if (!sprite.bitmapHolder.initialized) {
-			sprite.bitmapHolder.initialize();
-    	}
-	    canvas.drawBitmap(sprite.isResized() ? 
-	        sprite.bitmapHolder.scaleCopy(sprite.getWidth(), sprite.getHeight()) : 
-		    sprite.bitmapHolder.bitmap, sprite.getX(), sprite.getY(), null);
-    }
-    
-    /*protected void drawSprite(Canvas canvas, Sprite sprite) {
-    	drawSpriteDelegate.function(canvas, sprite);
-    }
-    
-    private Delegate drawBitmap = new Delegate() {
-    	public void function(Object... args) {
-    		if (!( (Sprite) args[1]).bitmapHolder.initialized) {
-    			( (Sprite) args[1]).bitmapHolder.initialize();
-	    	}
-		    ((Canvas)args[0]).drawBitmap(( (Sprite) args[1]).isResized() ? 
-		        ( (Sprite) args[1]).bitmapHolder.scaleCopy(( (Sprite) args[1]).getWidth(), ( (Sprite) args[1]).getHeight()) : 
-			    ( (Sprite) args[1]).bitmapHolder.bitmap, ( (Sprite) args[1]).getX(), ( (Sprite) args[1]).getY(), null);
-		}
-    };
-    
-    private Delegate waitForSetup = new Delegate() {
-    	public void function(Object... args) {
-    		if (sizeSetup) {
-    			drawSpriteDelegate = drawBitmap;
-    			drawSpriteDelegate.function(args);
-    		}
-		}
-    };
-	
-	private Delegate drawSpriteDelegate = waitForSetup;*/
 }

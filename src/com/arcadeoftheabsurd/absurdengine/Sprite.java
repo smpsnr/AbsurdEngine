@@ -1,8 +1,14 @@
 package com.arcadeoftheabsurd.absurdengine;
 
+import java.io.IOException;
+import java.util.Random;
+
 import com.arcadeoftheabsurd.j_utils.Vector2d;
 
+import android.content.Context;
+import android.graphics.Canvas;
 import android.graphics.Rect;
+import android.graphics.drawable.BitmapDrawable;
 
 /**
  * Represents a bitmap on the screen
@@ -23,7 +29,25 @@ public class Sprite
     	bounds = new Rect();
     	bounds.set(x, y, x + bitmapHolder.getInitialWidth(), y + bitmapHolder.getInitialHeight());
     }
+	
+	public static Sprite fromUrl(Context context, String url, int width, int height) throws IOException {
+		Random r = new Random();
+		String tempFileName = "temp" + r.nextInt();
+		String filePath = WebUtils.downloadFile(context, url, tempFileName);
+		return new Sprite (new BitmapTempFileHolder(
+    			((BitmapDrawable) BitmapDrawable.createFromPath(filePath)).getBitmap(),
+    			width, height, tempFileName, context), 0, 0);
+	}
     
+	public void draw(Canvas canvas) {
+		if (!bitmapHolder.isInitialized()) {
+			bitmapHolder.initialize();
+    	}
+	    canvas.drawBitmap(isResized() ? 
+	        bitmapHolder.scaleCopy(getWidth(), getHeight()) : 
+		    bitmapHolder.getBitmap(), getX(), getY(), null);
+	}
+	
     public void setLocation(int x, int y) {
     	pos.set(x, y);
     	bounds.set(pos.x, pos.y, pos.x + bounds.width(), pos.y + bounds.height());

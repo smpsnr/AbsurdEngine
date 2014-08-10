@@ -42,7 +42,7 @@ public class WebUtils
 	}
 	
 	// downloads a file to the current process's private storage space
-	public static String downloadFile(String fileUrl, String fileName, Context context) throws IOException {
+	public static String downloadFile(Context context, String fileUrl, String fileName) throws IOException {
 		URL url = new URL(fileUrl);
 		URLConnection conn = url.openConnection();
 		InputStream in = new BufferedInputStream(conn.getInputStream());
