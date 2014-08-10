@@ -9,7 +9,7 @@ import java.net.URLConnection;
 
 import android.content.Context;
 
-import com.arcadeoftheabsurd.absurdengine.BitmapTempFileHolder;
+import com.arcadeoftheabsurd.absurdengine.Sprite;
 import com.arcadeoftheabsurd.j_utils.Vector2d;
 import com.eclipsesource.json.JsonArray;
 import com.eclipsesource.json.JsonObject;
@@ -75,9 +75,9 @@ public class RequestNativeAd
 						
 						if(request.getImageAssets() != null) {
 							Vector2d assetSize = request.getImageAssets().get(type);
-							asset.bitmapHolder = BitmapTempFileHolder.fromUrl(url, assetSize.x, assetSize.y, context);
+							asset.sprite = Sprite.fromUrl(context, url, assetSize.x, assetSize.y);
 						} else {
-							asset.bitmapHolder = BitmapTempFileHolder.fromUrl(url, asset.width, asset.height, context);
+							asset.sprite = Sprite.fromUrl(context, url, asset.width, asset.height);
 						}
 						
 						response.addImageAsset(type, asset);

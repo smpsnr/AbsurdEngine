@@ -1,26 +1,16 @@
 package com.mobfox.adsdk.nativeads;
 
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.List;
 
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-
 import android.content.Context;
-import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
-import android.os.AsyncTask;
+import android.graphics.Paint;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.arcadeoftheabsurd.absurdengine.BitmapTempFileHolder;
-import com.arcadeoftheabsurd.j_utils.Vector2d;
+import com.arcadeoftheabsurd.absurdengine.Sprite;
 import com.mobfox.adsdk.nativeads.NativeAd.Tracker;
 
 public class NativeAdView extends FrameLayout 
@@ -32,27 +22,33 @@ public class NativeAdView extends FrameLayout
 	
 	public class NativeBanner extends RelativeLayout 
 	{
-		ImageView iconView;
+		Sprite sprite;
 		TextView descriptionView;
-		LayoutParams iconLayout, descriptionLayout; 
+		LayoutParams descriptionLayout; 
 		
-		public NativeBanner(Context context, Bitmap bitmap, String description) {
+		public NativeBanner(Context context, Sprite sprite, String description) {
 			super(context);
-
-			iconView = new ImageView(context);
-			iconView.setImageBitmap(bitmap);
-			iconLayout = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-			iconLayout.addRule(ALIGN_PARENT_LEFT);
+			this.sprite = sprite;
 			
 			descriptionView = new TextView(context);
 			descriptionView.setText(description);
 			descriptionView.setTextColor(Color.WHITE);
-			descriptionLayout = new LayoutParams(NativeAdView.this.getWidth() - bitmap.getWidth(), NativeAdView.this.getHeight());
+			descriptionLayout = new LayoutParams(NativeAdView.this.getWidth() - sprite.getWidth(), NativeAdView.this.getHeight());
 			descriptionLayout.addRule(CENTER_VERTICAL);
 			descriptionLayout.addRule(ALIGN_PARENT_RIGHT);
 			
-			addView(iconView, iconLayout);
 			addView(descriptionView, descriptionLayout);
+		}
+		
+		@Override
+		protected void dispatchDraw(Canvas canvas) {
+			super.dispatchDraw(canvas);
+			sprite.draw(canvas);
+		}
+		
+		@Override
+		protected void onSizeChanged(int newWidth, int newHeight, int oldWidth, int oldHeight) {
+			this.invalidate();
 		}
 	}
 
@@ -65,10 +61,7 @@ public class NativeAdView extends FrameLayout
 		if (bannerView != null) {
 			this.removeView(bannerView);
 		}
-		BitmapTempFileHolder bitmapHolder = ad.getImageAsset("icon").bitmapHolder;
-		bitmapHolder.initialize();
-		
-		bannerView = new NativeBanner(context, bitmapHolder.bitmap, ad.getTextAsset("description"));
+		bannerView = new NativeBanner(context, ad.getImageAsset("icon").sprite, ad.getTextAsset("description"));
 		this.addView(bannerView);
 	}
 
@@ -98,7 +91,7 @@ public class NativeAdView extends FrameLayout
 		}
 	}*/
 
-	private void trackImpression(final String url) {
+	/*private void trackImpression(final String url) {
 		AsyncTask<Void, Void, Void> task = new AsyncTask<Void, Void, Void>() {
 
 			@Override
@@ -120,5 +113,5 @@ public class NativeAdView extends FrameLayout
 			}
 		};
 		task.execute();
-	}
+	}*/
 }

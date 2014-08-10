@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.arcadeoftheabsurd.absurdengine.BitmapTempFileHolder;
+import com.arcadeoftheabsurd.absurdengine.Sprite;
 
 public class NativeAd 
 {
@@ -17,7 +17,7 @@ public class NativeAd
 	public static class ImageAsset 
 	{
 		String url;
-		public BitmapTempFileHolder bitmapHolder;
+		public Sprite sprite;
 		int width;
 		int height;
 	}
