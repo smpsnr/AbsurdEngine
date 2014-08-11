@@ -1,6 +1,7 @@
 package com.arcadeoftheabsurd.absurdengine;
 
 import com.arcadeoftheabsurd.absurdengine.GameView.GameLoadListener;
+import com.arcadeoftheabsurd.absurdengine.RunnerThread.UpdateListener;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -13,7 +14,7 @@ import android.view.View;
  * @author sam
  */
 
-public abstract class GameActivity extends Activity implements GameLoadListener
+public abstract class GameActivity extends Activity implements GameLoadListener, UpdateListener
 {    
     private RunnerThread gameRunner;
     private Handler gameHandler;
@@ -70,7 +71,8 @@ public abstract class GameActivity extends Activity implements GameLoadListener
     	gameRunner.start();
     }
     
-    void updateGame() 
+    @Override
+    public void update() 
     {
         // run in update thread
         game.update();

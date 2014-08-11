@@ -15,13 +15,18 @@ public class RunnerThread extends Thread
 	private boolean threadRunning = false;
     private boolean threadPaused = false;
     
-    private GameActivity activity;
+    private UpdateListener listener;
     
     private long sleepTime = 0;
     private long gameTime;
     
-    public RunnerThread(GameActivity activity) {
-        this.activity = activity;
+    public interface UpdateListener
+    {
+    	public void update();
+    }
+    
+    public RunnerThread(UpdateListener listener) {
+        this.listener = listener;
         this.setName("update thread");
     }
     
@@ -71,7 +76,7 @@ public class RunnerThread extends Thread
             }    
             
             // tell the gameview thread (android's UI thread) to execute game logic and redraw its view
-            activity.updateGame();
+            listener.update();
             
             // if the game is running faster than the specified FPS, sleep for the extra time
             gameTime += SKIP_MILLISECONDS;
