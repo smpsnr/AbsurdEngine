@@ -7,6 +7,7 @@
 #include "mobfox_UIDevice+IdentifierAddition.h"
 #include "com_arcadeoftheabsurd_OpenUDID.h"
 #include <AdSupport/AdSupport.h>
+#include <UIKit/UIkit.h>
 //XMLVM_END_NATIVE_IMPLEMENTATION
 
 JAVA_OBJECT com_arcadeoftheabsurd_absurdengine_DeviceUtility_getAdIdImpl__()
@@ -36,5 +37,15 @@ JAVA_OBJECT com_arcadeoftheabsurd_absurdengine_DeviceUtility_getLocalIpImpl__()
         IPAddressToReturn = [UIDevice localCellularIPAddress];
     }
 	return fromNSString(IPAddressToReturn);
+	//XMLVM_END_NATIVE
+}
+
+JAVA_OBJECT com_arcadeoftheabsurd_absurdengine_DeviceUtility_getUserAgentImpl__()
+{
+	//XMLVM_BEGIN_NATIVE[com_arcadeoftheabsurd_absurdengine_DeviceUtility_getUserAgentImpl__]
+	UIWebView* webView = [[UIWebView alloc] initWithFrame:CGRectZero];
+    NSString* userAgent = [webView stringByEvaluatingJavaScriptFromString:@"navigator.userAgent"];
+    
+    return fromNSString(userAgent);
 	//XMLVM_END_NATIVE
 }

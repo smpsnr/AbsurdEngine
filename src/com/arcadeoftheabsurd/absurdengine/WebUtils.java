@@ -10,7 +10,6 @@ import java.net.URL;
 import java.net.URLConnection;
 
 import android.content.Context;
-import android.webkit.WebView;
 
 /**
  * Provides device-independent network methods
@@ -19,27 +18,7 @@ import android.webkit.WebView;
 
 public class WebUtils 
 {
-	static final String IP_API = "http://ipinfo.io/ip";
-	
-	// gets the device's IP address by querying a third party server. this is actually the most reliable way to do it.
-	public static String getLocalIpAddress() throws IOException {
-		URL url = new URL(IP_API);
-		URLConnection conn = url.openConnection();		
-		BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
-
-		String line = "";
-		while((line = in.readLine()) != null) {
-			return line;
-		}
-		in.close();
-		
-		return null;
-	}
-	
-	// gets the device's user agent by starting the default web browser 
-	public static String getUserAgent(Context context) {
-		return new WebView(context).getSettings().getUserAgentString();
-	}
+	//static final String IP_API = "http://ipinfo.io/ip";
 	
 	// downloads a file to the current process's private storage space
 	public static String downloadFile(Context context, String fileUrl, String fileName) throws IOException {
@@ -66,6 +45,7 @@ public class WebUtils
 	public static String restRequest(String request) throws IOException {
 		URL url = new URL(request);
 		URLConnection conn = url.openConnection();
+		conn.setRequestProperty("User-Agent", DeviceUtility.getUserAgent());
 		BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
 
 		StringBuilder result = new StringBuilder();

@@ -12,6 +12,7 @@ import java.util.Enumeration;
 import org.OpenUDID.OpenUDID_manager;
 
 import android.content.DialogInterface;
+import android.webkit.WebView;
 
 import com.google.android.gms.ads.identifier.AdvertisingIdClient;
 import com.google.android.gms.ads.identifier.AdvertisingIdClient.Info;
@@ -47,20 +48,20 @@ public class DeviceUtility
 		DeviceUtility.context = context;
 	}
 	
+	public static void setAdId() throws InterruptedException {
+		adId = getAdIdImpl();
+	}
+	
 	public static void setLocalIp() {
 		localIp = getLocalIpImpl();
 	}
 	
 	public static void setUserAgent() {
-		userAgent = WebUtils.getUserAgent(context);
+		userAgent = getUserAgentImpl();
 	}
 	
-	public static void setAdId() throws InterruptedException {
-		//postBlocking(new Runnable() {
-			//public void run() {
-				adId = getAdIdImpl();
-			//}
-		//});
+	public static String getAdId() {
+		return adId;
 	}
 	
 	public static String getLocalIp() {
@@ -69,10 +70,6 @@ public class DeviceUtility
 	
 	public static String getUserAgent() {
 		return userAgent;
-	}
-	
-	public static String getAdId() {
-		return adId;
 	}
 	
 	public static boolean isAndroid() {
@@ -192,5 +189,15 @@ public class DeviceUtility
 	
 	/*{{ IOSONLY
 	private static native String getLocalIpImpl();
+	/*}}*/
+	
+	/*{{ ANDROIDONLY*/
+	private static String getUserAgentImpl() {
+		return new WebView(context).getSettings().getUserAgentString();
+	}
+	/*}}*/
+	
+	/*{{ IOSONLY
+	private static native String getUserAgentImpl();
 	/*}}*/
 }
