@@ -1,5 +1,6 @@
 package com.mobfox.adsdk.nativeads;
 
+import java.io.IOException;
 import java.util.List;
 
 import android.content.Context;
@@ -10,16 +11,17 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.arcadeoftheabsurd.absurdengine.Sprite;
+import com.arcadeoftheabsurd.absurdengine.WebUtils;
 import com.mobfox.adsdk.nativeads.NativeAd.Tracker;
 
-public class NativeAdView extends FrameLayout 
+public class NativeAdView extends FrameLayout
 {
 	private Context context;
-	private boolean impressionReported;
 	private NativeBanner bannerView;
+	private boolean impressionReported = false;
 	private List<Tracker> trackers;
-	
-	public class NativeBanner extends RelativeLayout 
+
+	class NativeBanner extends RelativeLayout 
 	{
 		Sprite sprite;
 		TextView descriptionView;
@@ -42,12 +44,11 @@ public class NativeAdView extends FrameLayout
 		@Override
 		protected void dispatchDraw(Canvas canvas) {
 			super.dispatchDraw(canvas);
+			sprite.setLocation(0, -20);
 			sprite.draw(canvas);
-		}
-		
-		@Override
-		protected void onSizeChanged(int newWidth, int newHeight, int oldWidth, int oldHeight) {
-			this.invalidate();
+						
+			System.out.println("banner width: " + getWidth() + " banner height: " + getHeight());
+			System.out.println("sprite width: " + sprite.getWidth() + " sprite height: " + sprite.getHeight());
 		}
 	}
 
@@ -56,61 +57,36 @@ public class NativeAdView extends FrameLayout
 		this.context = context;
 	}
 	
+	@SuppressWarnings("deprecation")
 	public void setAd(NativeAd ad) {
 		if (bannerView != null) {
 			this.removeView(bannerView);
 		}
+		trackers = ad.getTrackers();
 		bannerView = new NativeBanner(context, ad.getImageAsset("icon").sprite, ad.getTextAsset("description"));
-		this.addView(bannerView);
+		addView(bannerView, new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
+	
+		invalidate();
 	}
 
-	/*@Override
+	@Override
 	protected void dispatchDraw(Canvas canvas) {
 		if (trackers != null) {
 			if (!impressionReported) {
 				impressionReported = true;
-
+								
 				for (Tracker t : trackers) {
 					if (t.type.equals("impression")) {
-						trackImpression(t.url);
+						try {
+							System.out.println("tracking impression...");
+							System.out.println(WebUtils.restRequest(t.url));
+						} catch (IOException e) {
+							System.out.println("impression failed");
+						}
 					}
 				}
 			}
 		}
 		super.dispatchDraw(canvas);
-	}*/
-
-	/*private void notifyImpression() {
-		if (listener != null) {
-			handler.post(new Runnable() {
-				public void run() {
-					listener.impression();
-				}
-			});
-		}
-	}*/
-
-	/*private void trackImpression(final String url) {
-		AsyncTask<Void, Void, Void> task = new AsyncTask<Void, Void, Void>() {
-
-			@Override
-			protected Void doInBackground(Void... params) {
-				try {
-					HttpClient client = new DefaultHttpClient();
-					HttpGet request = new HttpGet();
-					request.setHeader("User-Agent", System.getProperty("http.agent"));
-					request.setURI(new URI(url));
-					client.execute(request);
-				} catch (URISyntaxException e) {
-					e.printStackTrace();
-				} catch (ClientProtocolException e) {
-					e.printStackTrace();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-				return null;
-			}
-		};
-		task.execute();
-	}*/
+	}
 }
