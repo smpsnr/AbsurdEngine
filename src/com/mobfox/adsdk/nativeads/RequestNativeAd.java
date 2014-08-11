@@ -29,9 +29,9 @@ public class RequestNativeAd
 	
 	public NativeAd sendRequest(NativeAdRequest request) throws RequestException {
 		try {
-			System.out.println(request.toString());
 			URL url = new URL(request.toString());
 			URLConnection conn = url.openConnection();
+			conn.setUseCaches(false);
 			conn.setRequestProperty("User-Agent", request.getUserAgent());
 			System.out.println("sending ad request");
 			return parse(conn.getInputStream(), request);	
@@ -43,8 +43,7 @@ public class RequestNativeAd
 	protected NativeAd parse(final InputStream inputStream, final NativeAdRequest request) throws RequestException {
 		final NativeAd response = new NativeAd();
 		try {
-			BufferedReader reader;
-			reader = new BufferedReader(new InputStreamReader(inputStream, Const.ENCODING), 8);
+			BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, Const.ENCODING), 8);
 			StringBuilder sb = new StringBuilder();
 
 			String line = null;
@@ -52,6 +51,7 @@ public class RequestNativeAd
 				sb.append(line + "\n");
 			}
 			String result = sb.toString();
+			reader.close();
 			
 			System.out.println("parsing result");
 						
@@ -79,7 +79,6 @@ public class RequestNativeAd
 						} else {
 							asset.sprite = Sprite.fromUrl(context, url, asset.width, asset.height);
 						}
-						
 						response.addImageAsset(type, asset);
 					}
 				}
