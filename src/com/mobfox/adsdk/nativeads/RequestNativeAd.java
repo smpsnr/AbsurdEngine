@@ -14,6 +14,7 @@ import com.arcadeoftheabsurd.j_utils.Vector2d;
 import com.eclipsesource.json.JsonArray;
 import com.eclipsesource.json.JsonObject;
 import com.eclipsesource.json.JsonValue;
+import com.eclipsesource.json.ParseException;
 import com.mobfox.adsdk.Const;
 import com.mobfox.adsdk.RequestException;
 import com.mobfox.adsdk.nativeads.NativeAd.ImageAsset;
@@ -113,7 +114,9 @@ public class RequestNativeAd
 				}
 			}
 		} catch (IOException e) {
-			throw new RequestException("Cannot parse Response", e);
+			throw new RequestException("Error getting response", e);
+		} catch (ParseException e) {
+			throw new RequestException("Error parsing response", e);
 		}
 		return response;
 	}
