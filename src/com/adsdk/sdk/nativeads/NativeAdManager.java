@@ -11,10 +11,13 @@ import java.util.Map;
 import android.content.Context;
 import android.os.Handler;
 
-import com.adsdk.sdk.Gender;
 import com.adsdk.sdk.RequestException;
 import com.arcadeoftheabsurd.absurdengine.DeviceUtility;
 import com.arcadeoftheabsurd.j_utils.Vector2d;
+
+/**
+ * Manages MobFox API requests - builds and sends request and notifies NativeAdListener of result
+ */
 
 public class NativeAdManager 
 {
@@ -25,7 +28,6 @@ public class NativeAdManager
 	
 	private NativeAd nativeAd;
 	private String publisherId;
-	private Gender userGender;
 	private int userAge;
 	private List<String> keywords;
 	private List<String> adTypes;
@@ -72,7 +74,6 @@ public class NativeAdManager
 			this.request.setUserAgent(DeviceUtility.getUserAgent());
 		}
 		request.setAdTypes(adTypes);
-		request.setGender(userGender);
 		request.setUserAge(userAge);
 		request.setAdTypes(adTypes);
 		request.setKeywords(keywords);
@@ -99,10 +100,6 @@ public class NativeAdManager
 				}
 			});
 		}
-	}
-
-	public void setUserGender(Gender userGender) {
-		this.userGender = userGender;
 	}
 
 	public void setUserAge(int userAge) {

@@ -5,6 +5,10 @@
 
 package com.adsdk.sdk.nativeads;
 
+/**
+ * To be implemented by classes that receive ads from a NativeAdManager 
+ */
+
 public interface NativeAdListener
 {
 	public void adLoaded(NativeAd ad);

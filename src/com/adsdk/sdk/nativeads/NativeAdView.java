@@ -15,6 +15,10 @@ import android.widget.LinearLayout;
 import com.adsdk.sdk.nativeads.NativeAd.Tracker;
 import com.arcadeoftheabsurd.absurdengine.WebUtils;
 
+/**
+ * Base for Views that display NativeAds
+ */
+
 // this should really be a FrameView that hosts any View type,
 // but on iOS XMLVM does not lay out the contents of FrameViews correctly
 public class NativeAdView extends LinearLayout implements NativeAdListener

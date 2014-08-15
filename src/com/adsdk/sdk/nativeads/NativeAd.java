@@ -12,6 +12,10 @@ import java.util.Map;
 
 import com.arcadeoftheabsurd.absurdengine.Sprite;
 
+/**
+ * Represents a native ad with text and image assets and impression trackers
+ */
+
 public class NativeAd 
 {
 	private String clickUrl;

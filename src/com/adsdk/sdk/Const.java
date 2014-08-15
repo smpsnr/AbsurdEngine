@@ -5,6 +5,10 @@
 
 package com.adsdk.sdk;
 
+/**
+ * Ad SDK constants
+ */
+
 public interface Const
 {
 	public static final String ENCODING = "UTF-8";

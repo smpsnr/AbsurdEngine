@@ -5,6 +5,10 @@
 
 package com.adsdk.sdk;
 
+/**
+ * Thrown while sending/ parsing MobFox API requests
+ */
+
 public class RequestException extends Exception 
 {
 	private static final long serialVersionUID = 1L;

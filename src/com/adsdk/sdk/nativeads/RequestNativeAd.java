@@ -25,6 +25,10 @@ import com.eclipsesource.json.JsonObject;
 import com.eclipsesource.json.JsonValue;
 import com.eclipsesource.json.ParseException;
 
+/**
+ * Helper class - sends NativeAdRequests and parses the result
+ */
+
 public class RequestNativeAd 
 {
 	private Context context;

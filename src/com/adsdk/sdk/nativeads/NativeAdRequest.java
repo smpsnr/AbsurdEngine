@@ -13,9 +13,12 @@ import java.util.Random;
 
 
 import com.adsdk.sdk.Const;
-import com.adsdk.sdk.Gender;
 import com.arcadeoftheabsurd.absurdengine.DeviceUtility;
 import com.arcadeoftheabsurd.j_utils.Vector2d;
+
+/**
+ * Represents a MobFox API request
+ */
 
 public class NativeAdRequest 
 {
@@ -36,7 +39,6 @@ public class NativeAdRequest
 	private String protocolVersion;
 	private double longitude = 0.0;
 	private double latitude = 0.0;
-	private Gender gender;
 	private int userAge;
 	
 	@SuppressWarnings("deprecation")
@@ -90,9 +92,6 @@ public class NativeAdRequest
 
 		if (userAge != 0) {
 			b.append("&demo.age=" + Integer.toString(userAge));
-		}
-		if (gender != null) {
-			b.append("&demo.gender=" + gender.getServerParam());
 		}
 		if (keywords != null) {
 			b.append("&demo.keywords=");
@@ -176,15 +175,6 @@ public class NativeAdRequest
 	public void setLatitude(double latitude) {
 		this.latitude = latitude;
 	}
-
-	public Gender getGender() {
-		return gender;
-	}
-
-	public void setGender(Gender gender) {
-		this.gender = gender;
-	}
-
 	public int getUserAge() {
 		return userAge;
 	}
