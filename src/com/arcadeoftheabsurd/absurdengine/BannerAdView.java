@@ -5,7 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.widget.TextView;
 
-import com.mobfox.adsdk.nativeads.NativeAdView;
+import com.adsdk.sdk.nativeads.NativeAdView;
 
 /**
  * View that displays a NativeAd as a horizontal banner: [ad icon] [textMarginLeft] [ad description] [textMarginRight]

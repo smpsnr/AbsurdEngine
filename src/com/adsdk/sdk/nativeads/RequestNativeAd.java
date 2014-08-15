@@ -1,4 +1,9 @@
-package com.mobfox.adsdk.nativeads;
+/*
+ * Adapted from the MobFox Android SDK (https://github.com/mobfox/MobFox-Android-SDK)
+ * under the MoPub Client License (/3rdparty-license/adsdk-LICENSE.txt)
+ */
+
+package com.adsdk.sdk.nativeads;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -9,16 +14,16 @@ import java.net.URLConnection;
 
 import android.content.Context;
 
+import com.adsdk.sdk.Const;
+import com.adsdk.sdk.RequestException;
+import com.adsdk.sdk.nativeads.NativeAd.ImageAsset;
+import com.adsdk.sdk.nativeads.NativeAd.Tracker;
 import com.arcadeoftheabsurd.absurdengine.Sprite;
 import com.arcadeoftheabsurd.j_utils.Vector2d;
 import com.eclipsesource.json.JsonArray;
 import com.eclipsesource.json.JsonObject;
 import com.eclipsesource.json.JsonValue;
 import com.eclipsesource.json.ParseException;
-import com.mobfox.adsdk.Const;
-import com.mobfox.adsdk.RequestException;
-import com.mobfox.adsdk.nativeads.NativeAd.ImageAsset;
-import com.mobfox.adsdk.nativeads.NativeAd.Tracker;
 
 public class RequestNativeAd 
 {

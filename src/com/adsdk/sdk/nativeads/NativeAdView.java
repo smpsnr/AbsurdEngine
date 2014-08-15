@@ -1,4 +1,9 @@
-package com.mobfox.adsdk.nativeads;
+/*
+ * Adapted from the MobFox Android SDK (https://github.com/mobfox/MobFox-Android-SDK)
+ * under the MoPub Client License (/3rdparty-license/adsdk-LICENSE.txt)
+ */
+
+package com.adsdk.sdk.nativeads;
 
 import java.io.IOException;
 import java.util.List;
@@ -7,8 +12,8 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.widget.LinearLayout;
 
+import com.adsdk.sdk.nativeads.NativeAd.Tracker;
 import com.arcadeoftheabsurd.absurdengine.WebUtils;
-import com.mobfox.adsdk.nativeads.NativeAd.Tracker;
 
 // this should really be a FrameView that hosts any View type,
 // but on iOS XMLVM does not lay out the contents of FrameViews correctly

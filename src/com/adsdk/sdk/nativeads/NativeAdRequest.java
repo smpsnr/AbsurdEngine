@@ -1,4 +1,9 @@
-package com.mobfox.adsdk.nativeads;
+/*
+ * Adapted from the MobFox Android SDK (https://github.com/mobfox/MobFox-Android-SDK)
+ * under the MoPub Client License (/3rdparty-license/adsdk-LICENSE.txt)
+ */
+
+package com.adsdk.sdk.nativeads;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -6,9 +11,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import com.mobfox.adsdk.Const;
-import com.mobfox.adsdk.Gender;
 
+import com.adsdk.sdk.Const;
+import com.adsdk.sdk.Gender;
 import com.arcadeoftheabsurd.absurdengine.DeviceUtility;
 import com.arcadeoftheabsurd.j_utils.Vector2d;
 

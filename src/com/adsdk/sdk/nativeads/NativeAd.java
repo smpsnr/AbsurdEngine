@@ -1,4 +1,9 @@
-package com.mobfox.adsdk.nativeads;
+/*
+ * Adapted from the MobFox Android SDK (https://github.com/mobfox/MobFox-Android-SDK)
+ * under the MoPub Client License (/3rdparty-license/adsdk-LICENSE.txt)
+ */
+
+package com.adsdk.sdk.nativeads;
 
 import java.util.ArrayList;
 import java.util.HashMap;
