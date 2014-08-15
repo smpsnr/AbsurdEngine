@@ -1,3 +1,8 @@
+/*
+ * OpenUDID Android code (https://github.com/vieux/OpenUDID)
+ * Used in AbsurdEngine under the zlib License (/3rdparty-license/openudid-LICENSE.txt)
+ */
+
 package org.OpenUDID;
 
 import java.math.BigInteger;

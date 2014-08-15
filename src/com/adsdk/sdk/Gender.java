@@ -1,6 +1,6 @@
 /*
- * Adapted from the MobFox Android SDK (https://github.com/mobfox/MobFox-Android-SDK)
- * under the MoPub Client License (/3rdparty-license/adsdk-LICENSE.txt)
+ * Based on MobFox Android SDK code (https://github.com/mobfox/MobFox-Android-SDK)
+ * Modified for AbsurdEngine under the MoPub Client License (/3rdparty-license/adsdk-LICENSE.txt)
  */
 
 package com.adsdk.sdk;

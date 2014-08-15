@@ -1,6 +1,6 @@
 /*
- * From the MobFox iOS SDK (https://github.com/mobfox/MobFox-iOS-SDK)
- * Used in AbsurdEngine under the MoPub Client License (see /MoPub_Client_License.txt)
+ * MobFox iOS SDK code (https://github.com/mobfox/MobFox-iOS-SDK)
+ * Used in AbsurdEngine under the MoPub Client License (/3rdparty-license/adsdk-LICENSE.txt)
  */
  
 //
