@@ -1,7 +1,7 @@
 package com.arcadeoftheabsurd.absurdengine;
 
 /**
- * Thread running game logic at the appropriate pace
+ * Thread that calls its UpdateListener's update method FPS times per second 
  * @author sam
  */
 
@@ -62,7 +62,6 @@ public class RunnerThread extends Thread
         }
     }
     
-    // the main loop of the game
     @Override
     public void run() {    
         while (threadRunning) {
@@ -73,12 +72,10 @@ public class RunnerThread extends Thread
                         pauseLock.wait();
                     } catch (InterruptedException e) {}               
                 }
-            }    
-            
-            // tell the gameview thread (android's UI thread) to execute game logic and redraw its view
+            }                
             listener.update();
             
-            // if the game is running faster than the specified FPS, sleep for the extra time
+            // if the thread is running faster than the specified FPS, sleep for the extra time
             gameTime += SKIP_MILLISECONDS;
             sleepTime = gameTime - System.currentTimeMillis();
             

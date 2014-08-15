@@ -4,9 +4,9 @@ import android.content.Context;
 import android.graphics.Bitmap;
 
 /**
-* Holds a Bitmap with data in a temporary file; deletes that file once the bitmap is initialized
-* @author sam
-*/
+ * Holds a Bitmap with data in a temporary file; deletes that file once the bitmap is initialized
+ * @author sam
+ */
 
 class BitmapTempFileHolder extends BitmapHolder
 {

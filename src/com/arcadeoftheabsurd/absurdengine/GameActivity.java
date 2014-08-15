@@ -9,8 +9,9 @@ import android.os.Handler;
 import android.view.View;
 
 /**
- * Entry point for Absurd Engine games. Maintains a RunnerThread that calls updateGame FPS times per second,
- * executing its GameView's logic on the runner thread and rendering it on the main (UI) thread
+ * Entry point for Absurd Engine games 
+ * Maintains a RunnerThread that updates a GameView FPS times per second,
+ * executing its update logic asynchronously and invalidating it on the UI thread 
  * @author sam
  */
 

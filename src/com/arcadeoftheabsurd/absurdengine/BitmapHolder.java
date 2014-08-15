@@ -6,9 +6,9 @@ import android.graphics.Canvas;
 import com.arcadeoftheabsurd.j_utils.Vector2d;
 
 /**
-* Holds a Bitmap and information relevant to GameView, provides convenience methods
-* @author sam
-*/
+ * Holds a Bitmap and information relevant to rendering Sprites, provides convenience methods
+ * @author sam
+ */
 
 class BitmapHolder
 {

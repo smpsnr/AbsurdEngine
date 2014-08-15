@@ -21,7 +21,8 @@ import com.google.android.gms.common.GooglePlayServicesUtil;
 /*}}*/
 
 /**
- * Provides device specific utilities
+ * Provides device specific utilities. 
+ * Initialize localIp, userAgent, and adId with set() before get()ting them
  * @author sam
  */
 
