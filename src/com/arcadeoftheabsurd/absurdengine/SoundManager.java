@@ -1,3 +1,14 @@
+/*
+ * AbsurdEngine (https://bitbucket.org/smpsnr/absurdengine/) 
+ * (c) by Sam Posner (http://www.arcadeoftheabsurd.com/)
+ *
+ * AbsurdEngine is licensed under a
+ * Creative Commons Attribution 4.0 International License
+ *
+ * You should have received a copy of the license along with this
+ * work. If not, see http://creativecommons.org/licenses/by/4.0/ 
+ */
+
 package com.arcadeoftheabsurd.absurdengine;
 
 import java.io.IOException;
@@ -5,6 +16,11 @@ import java.io.IOException;
 import android.content.res.AssetFileDescriptor;
 import android.content.res.AssetManager;
 import android.media.MediaPlayer;
+
+/**
+ * Static class for playing music and sound effects
+ * @author sam
+ */
 
 public class SoundManager 
 {
@@ -63,6 +79,12 @@ public class SoundManager
 	}
 	
 	public static void playSound(int channel) {
+		mediaChannels[channel].start();
+		paused[channel] = false;
+	}
+	
+	public static void loopSound(int channel) {
+		mediaChannels[channel].setLooping(true);
 		mediaChannels[channel].start();
 		paused[channel] = false;
 	}
