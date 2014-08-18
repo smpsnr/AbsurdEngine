@@ -31,9 +31,10 @@ public class NativeAdManager
 	private int userAge;
 	private List<String> keywords;
 	private List<String> adTypes;
+	private List<String> textTypes;
 	private Map<String, Vector2d> imageAssets;
 	
-	public NativeAdManager(Context context, NativeAdListener listener, String publisherId, List<String> adTypes, Map<String, Vector2d> imageAssets) {
+	public NativeAdManager(Context context, NativeAdListener listener, String publisherId, List<String> adTypes, List<String> textTypes, Map<String, Vector2d> imageAssets) {
 		if ((publisherId == null) || (publisherId.length() == 0)) {
 			throw new IllegalArgumentException("Publisher ID cannot be null or empty");
 		}
@@ -41,6 +42,7 @@ public class NativeAdManager
 		this.publisherId = publisherId;
 		this.listener = listener;
 		this.adTypes = adTypes;
+		this.textTypes = textTypes;
 		this.imageAssets = imageAssets;
 		
 		handler = new Handler();
@@ -76,6 +78,7 @@ public class NativeAdManager
 		request.setAdTypes(adTypes);
 		request.setUserAge(userAge);
 		request.setAdTypes(adTypes);
+		request.setTextTypes(textTypes);
 		request.setKeywords(keywords);
 		request.setImageAssets(imageAssets);
 

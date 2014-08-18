@@ -31,6 +31,7 @@ public class NativeAdRequest
 	private static final String REQUEST_TYPE_IPHONE = "iphone_app";
 	
 	private List<String> adTypes;
+	private List<String> textTypes;
 	private List<String> keywords;
 	private Map<String, Vector2d> imageAssets;
 	private String publisherId;
@@ -66,8 +67,14 @@ public class NativeAdRequest
 				b.append(i < imageTypes.length - 1 ? imageTypes[i] + "," : imageTypes[i]);
 			}
 		}
-		b.append("&n_txt=" + TEXT_TYPES);
-		
+		if (textTypes == null) {
+			b.append("&n_txt=" + TEXT_TYPES);
+		} else {
+			b.append("&n_txt=");
+			for (int i = 0; i < textTypes.size(); i++) {
+				b.append(i < textTypes.size() - 1 ? textTypes.get(i) + "," : textTypes.get(i));
+			}
+		}
 		if (adTypes != null) {
 			b.append("&n_type=");
 			for (int i = 0; i < adTypes.size(); i++) {
@@ -112,6 +119,14 @@ public class NativeAdRequest
 
 	public void setAdTypes(List<String> adTypes) {
 		this.adTypes = adTypes;
+	}
+	
+	public List<String> getTextTypes() {
+		return textTypes;
+	}
+	
+	public void setTextTypes(List<String> textTypes) {
+		this.textTypes = textTypes;
 	}
 	
 	public Map<String, Vector2d> getImageAssets() {
