@@ -48,6 +48,9 @@ public abstract class GameActivity extends Activity implements GameLoadListener,
     protected void onResume() {
         super.onResume();
         
+        if (SoundManager.isInitialized()) {
+        	SoundManager.resumeAll();
+        }
         if (gameRunner.paused()) {
             gameRunner.unpause();
         } else {
@@ -59,7 +62,13 @@ public abstract class GameActivity extends Activity implements GameLoadListener,
     protected void onPause() {
         super.onPause();
         
+        if (SoundManager.isInitialized()) {
+        	SoundManager.pauseAll();
+        }
         if (isFinishing()) {
+        	if (SoundManager.isInitialized()) {
+        		SoundManager.releaseAll();
+        	}
             gameRunner.finish();
         } else {
             gameRunner.pause();
