@@ -17,6 +17,8 @@ import java.util.Random;
 import com.arcadeoftheabsurd.j_utils.Vector2d;
 
 import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
@@ -41,6 +43,10 @@ public class Sprite
     	bounds.set(x, y, x + bitmapHolder.getInitialWidth(), y + bitmapHolder.getInitialHeight());
     }
 	
+	void setBitmap(BitmapHolder bitmapHolder) {
+		this.bitmapHolder = bitmapHolder;
+	}
+	
 	public static Sprite fromUrl(Context context, String url, int width, int height) throws IOException {
 		Random r = new Random();
 		String tempFileName = "temp" + r.nextInt();
@@ -48,6 +54,10 @@ public class Sprite
 		return new Sprite (new BitmapTempFileHolder(
     			((BitmapDrawable) BitmapDrawable.createFromPath(filePath)).getBitmap(),
     			width, height, tempFileName, context), 0, 0);
+	}
+	
+	public static Sprite fromResource(Resources resources, int resourceId, int width, int height) {
+		return new Sprite(new BitmapHolder(BitmapFactory.decodeResource(resources, resourceId), width, height), 0, 0);
 	}
     
 	public void draw(Canvas canvas) {

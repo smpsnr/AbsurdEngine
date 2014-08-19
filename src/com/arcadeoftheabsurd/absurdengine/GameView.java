@@ -29,7 +29,8 @@ import com.arcadeoftheabsurd.j_utils.Vector2d;
 
 public abstract class GameView extends View implements Observer
 {    	
-    protected ArrayList<Timer> timers = new ArrayList<Timer>();
+	protected ArrayList<TimerAsync> asyncTimers = new ArrayList<TimerAsync>();
+	protected ArrayList<TimerUI> uiTimers = new ArrayList<TimerUI>();
     protected int bitmapsInitialized = 0;
     
     private GameLoadListener loadListener;
@@ -58,19 +59,28 @@ public abstract class GameView extends View implements Observer
     
     // called when timers fire
     public void update(Observable timer, Object id) {
-        timers.get((Integer)id).method.function();
+    	((Timer)timer).method.function();
     }
         
-    // called RunnerThread.FPS times per second.
-    void update() {
-        for (Timer t : timers) {
+    void updateAsync() {
+        for (Timer t : asyncTimers) {
             t.tic();
         }        
         updateGame();
     }       
     
+    void updateUI() {
+    	for (Timer t : uiTimers) {
+            t.tic();
+        }    
+    }
+    
     protected Sprite makeSprite(int bitmapId, int x, int y) {
     	return new Sprite(bitmapStorage.get(bitmapId), x, y);
+    }
+    
+    protected void swapSprite(Sprite sprite, int bitmapId) {
+    	sprite.setBitmap(bitmapStorage.get(bitmapId));
     }
     
 	protected ArrayList<Integer> loadBitmapResources(Pair<Integer, Vector2d>... args) {

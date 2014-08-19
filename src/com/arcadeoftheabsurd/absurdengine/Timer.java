@@ -20,19 +20,22 @@ import com.arcadeoftheabsurd.j_utils.Delegate;
  * @author sam
  */
 
-public class Timer extends Observable
+abstract class Timer extends Observable
 {    
 	public static int curId = 0;
 	
 	public Delegate method;
 	
-	private GameView context;
+	protected GameView context;
     private boolean running;
     private float delay;
         
     private final int id;
     private final float time;
     private final float delayInc = (float) 1 / RunnerThread.FPS;
+    
+    protected abstract void addToContext();
+    protected abstract void removeFromContext();
     
     public Timer(float time, GameView context, Delegate method) {
         this.time = time;
@@ -58,13 +61,13 @@ public class Timer extends Observable
     public void start() {
         running = true;
         addObserver(context);
-        context.timers.add(this);   
+        addToContext();  
     }
     
     public void end() {
         running = false;
         this.deleteObservers();
-        context.timers.remove(this);
+        removeFromContext();
     }
     
     public void resume() {

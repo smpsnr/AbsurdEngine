@@ -96,11 +96,12 @@ public abstract class GameActivity extends Activity implements GameLoadListener,
     public void update() 
     {
         // run in update thread
-        game.update();
+        game.updateAsync();
         gameHandler.post (
             new Runnable() {
                 public void run() {
                     // post to UI thread
+                	game.updateUI();
                     game.invalidate();  
                 }
             }
