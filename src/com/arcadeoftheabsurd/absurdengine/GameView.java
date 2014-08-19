@@ -17,8 +17,11 @@ import android.graphics.drawable.BitmapDrawable;
 import android.view.View;
 import java.util.ArrayList;
 import java.util.Observable;
-import java.util.Observer;
 
+import com.arcadeoftheabsurd.absurdengine.Timer.TimerAsync;
+import com.arcadeoftheabsurd.absurdengine.Timer.TimerAsyncListener;
+import com.arcadeoftheabsurd.absurdengine.Timer.TimerUI;
+import com.arcadeoftheabsurd.absurdengine.Timer.TimerUIListener;
 import com.arcadeoftheabsurd.j_utils.Pair;
 import com.arcadeoftheabsurd.j_utils.Vector2d;
 
@@ -27,11 +30,10 @@ import com.arcadeoftheabsurd.j_utils.Vector2d;
  * @author sam
  */
 
-public abstract class GameView extends View implements Observer
+public abstract class GameView extends View implements TimerAsyncListener, TimerUIListener
 {    	
-	protected ArrayList<TimerAsync> asyncTimers = new ArrayList<TimerAsync>();
-	protected ArrayList<TimerUI> uiTimers = new ArrayList<TimerUI>();
-    protected int bitmapsInitialized = 0;
+	private ArrayList<TimerAsync> asyncTimers = new ArrayList<TimerAsync>();
+	private ArrayList<TimerUI> uiTimers = new ArrayList<TimerUI>();
     
     private GameLoadListener loadListener;
     private ArrayList<BitmapHolder> bitmapStorage = new ArrayList<BitmapHolder>();
@@ -61,7 +63,8 @@ public abstract class GameView extends View implements Observer
     public void update(Observable timer, Object id) {
     	((Timer)timer).method.function();
     }
-        
+     
+    // called at RunnerThread.FPS on the update thread 
     void updateAsync() {
         for (Timer t : asyncTimers) {
             t.tic();
@@ -69,10 +72,27 @@ public abstract class GameView extends View implements Observer
         updateGame();
     }       
     
+    // called at RunnerThread.FPS on the UI thread
     void updateUI() {
     	for (Timer t : uiTimers) {
             t.tic();
         }    
+    }
+    
+    public void addAsyncTimer(TimerAsync timer) {
+    	asyncTimers.add(timer);
+    }
+    
+    public void removeAsyncTimer(TimerAsync timer) {
+    	asyncTimers.remove(timer);
+    }
+    
+    public void addUITimer(TimerUI timer) {
+    	uiTimers.add(timer);
+    }
+    
+    public void removeUITimer(TimerUI timer) {
+    	uiTimers.remove(timer);
     }
     
     protected Sprite makeSprite(int bitmapId, int x, int y) {
