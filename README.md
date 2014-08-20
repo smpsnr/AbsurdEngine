@@ -109,7 +109,7 @@ before adding Android-specific Google Play and OpenUDID references
     * Copy `AndroidManifest.xml` and `gen/yourpackagename` to new directories, perhaps `androidmanifest_ios` and `gen_ios` respectively
     * In `local.properties`, set the following properties:
         * `src.gen.dir=gen_ios`
-        * `manifest.ios=androidmanifest_ios/AndroidManifest.xml`
+        * `manifest=androidmanifest_ios/AndroidManifest.xml`
 * Reference the AbsurdEngine, Google Play Services, and OpenUDID libraries from your Android project
     * *MyProject -> Project -> Properties -> Android*
     * *Add* the `google-play-services_lib` library project to the list of references
