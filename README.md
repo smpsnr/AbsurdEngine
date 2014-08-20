@@ -92,10 +92,12 @@ See the next section for instructions on enabling the advertisement SDK in an Ab
         * `--app-name=`   the name of your project
         * `--androidsdk=` the path of your Android SDK installation
         * `--absurdsdk=`  the path of your AbsurdEngine installation 
-* Set up the generated Android project in Eclipse
+* Add the generated Android project to Eclipse
     * *File -> Import -> Existing Android Code Into Workspace*
-    * *MyProject -> Project -> Properties -> Android*
-    * *Add* the `AbsurdEngine` library project to the list of references 
+    * __If you are using the ad SDK, follow the instructions in the next section__ 
+    * If not, reference the AbsurdEngine from your new project:
+        * *MyProject -> Project -> Properties -> Android*
+        * *Add* the `AbsurdEngine` library project to the list of references
 
 #### Enabling the Advertisement SDK
 
@@ -108,9 +110,10 @@ before adding Android-specific Google Play and OpenUDID references
     * In `local.properties`, set the following properties:
         * `src.gen.dir=gen_ios`
         * `manifest.ios=androidmanifest_ios/AndroidManifest.xml`
-* Reference the Google Play Services and OpenUDID libraries from your Android project
+* Reference the AbsurdEngine, Google Play Services, and OpenUDID libraries from your Android project
     * *MyProject -> Project -> Properties -> Android*
-    * *Add* the `google-play-services_lib` library project to the list of references. This will automatically generate code in R.java
+    * *Add* the `google-play-services_lib` library project to the list of references
+    * *Add* the `AbsurdEngine` library project to the list of references
     * Add the following to AndroidManifest.xml, within the `<application>` element:
         * >     <meta-data  
           >          android:name="com.google.android.gms.version"  
