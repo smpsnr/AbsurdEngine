@@ -50,8 +50,6 @@ Before starting, make sure you have Xcode installed and an Android development w
 
 ### Install the AbsurdEngine
 * Clone the source code
-    * `mkdir absurdengine`
-    * `cd absurdengine`
     * `hg clone https://smpsnr@bitbucket.org/smpsnr/absurdengine`
 * Add the Android library project to your Eclipse workspace
     * *File -> Import -> Existing Android Code Into Workspace*
