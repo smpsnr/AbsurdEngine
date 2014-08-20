@@ -73,7 +73,7 @@ If you __do__ plan on using advertisements, you must first reference the Google 
 
 * Install the Google Place Services SDK
     * In the Android SDK Manager ( `sdk/tools/android` ), install *Extras -> Google Place Services*
-    * Copy the Google Play Services library project ( `sdk/extras/google/google_play_services/libproject/google-play-services_lib` ) to your Eclipse workspace
+    * Make a copy of the Google Play Services library project ( `sdk/extras/google/google_play_services/libproject/google-play-services_lib` ) to use in Eclipse
 * Reference the Google Play Services library project from the AbsurdEngine
     * *File -> Import -> Existing Android Code Into Workspace*
     * *AbsurdEngine -> Project -> Properties -> Android*
