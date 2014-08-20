@@ -9,14 +9,14 @@
  * work. If not, see http://creativecommons.org/licenses/by/4.0/ 
  */
 
-package com.arcadeoftheabsurd.absurdengine;
+package com.adsdk.sdk.nativeads;
 
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.widget.TextView;
 
-import com.adsdk.sdk.nativeads.NativeAdView;
+import com.arcadeoftheabsurd.absurdengine.Sprite;
 
 /**
  * View that displays a NativeAd as a horizontal banner: [ad icon] [textMarginLeft] [ad description] [textMarginRight]

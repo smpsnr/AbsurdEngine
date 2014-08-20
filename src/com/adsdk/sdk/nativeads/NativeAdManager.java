@@ -11,6 +11,7 @@ import java.util.Map;
 import android.content.Context;
 import android.os.Handler;
 
+import com.adsdk.sdk.IdentifierUtility;
 import com.adsdk.sdk.RequestException;
 import com.arcadeoftheabsurd.absurdengine.DeviceUtility;
 import com.arcadeoftheabsurd.j_utils.Vector2d;
@@ -72,7 +73,7 @@ public class NativeAdManager
 		if (this.request == null) {
 			this.request = new NativeAdRequest();
 			this.request.setPublisherId(publisherId);
-			this.request.setAdId(DeviceUtility.getAdId());
+			this.request.setAdId(IdentifierUtility.getAdId());
 			this.request.setUserAgent(DeviceUtility.getUserAgent());
 		}
 		request.setAdTypes(adTypes);
