@@ -38,8 +38,6 @@ Before starting, make sure you have Xcode installed and an Android development w
 ### Install [xmlvm-AbsurdEngine](https://bitbucket.org/smpsnr/xmlvm-absurdengine)
 
 * Clone the source code
-    * `mkdir xmlvm-absurdengine`
-    * `cd xmlvm-absurdengine`
     * `hg clone https://smpsnr@bitbucket.org/smpsnr/xmlvm-absurdengine`
 * Set the installation directory
     * Create the file `local.properties` in `xmlvm-absurdengine/properties`
