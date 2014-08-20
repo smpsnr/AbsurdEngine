@@ -92,6 +92,7 @@ See the next section for instructions on enabling the advertisement SDK in an Ab
         * `--app-name=`   the name of your project
         * `--androidsdk=` the path of your Android SDK installation
         * `--absurdsdk=`  the path of your AbsurdEngine installation 
+* Don't worry about the InputProcess warning        
 * Add the generated Android project to Eclipse
     * *File -> Import -> Existing Android Code Into Workspace*
     * __If you are using the ad SDK, follow the instructions in the next section__ 
@@ -135,6 +136,8 @@ must be copied manually from the Android files to their copies in `gen_ios` and 
 * iOS
     * Run `ant` in in your project directory
     * The Xcode project created in `myproject/dist` is opened automatically; build and run like any other iOS project
+    
+The template project should display the Arcade of the Absurd logo bouncing around the screen
 
 ## __Notes__
 
