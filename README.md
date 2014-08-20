@@ -50,8 +50,6 @@ Before starting, make sure you have Xcode installed and an Android development w
 
 ### Install the AbsurdEngine
 * Clone the source code
-    * `mkdir absurdengine`
-    * `cd absurdengine`
     * `hg clone https://smpsnr@bitbucket.org/smpsnr/absurdengine`
 * Add the Android library project to your Eclipse workspace
     * *File -> Import -> Existing Android Code Into Workspace*
@@ -71,11 +69,11 @@ If you __do not__ need advertisements, simply remove the irrelevant code from th
     * Select `AbsurdEngine/src_android`, choose *Edit*, then *Next*
     * *Add* the following exclusion pattern: `org/OpenUDID/`
 
-If you __do__ plan on using advertisements, you must first reference the Google Play Services SDK:
+If you __do__ plan on using advertisements, you must first reference the Google Play Services library:
 
-* Install the Google Place Services SDK
-    * In the Android SDK Manager ( `sdk/tools/android` ), install *Extras -> Google Place Services*
-    * Copy the Google Play Services library project ( `sdk/extras/google/google_play_services/libproject/google-play-services_lib` ) to your Eclipse workspace
+* Install Google Play Services
+    * In the Android SDK Manager ( `sdk/tools/android` ), install *Extras -> Google Play Services*
+    * Make a copy of the Google Play Services library project ( `sdk/extras/google/google_play_services/libproject/google-play-services_lib` ) to use in Eclipse
 * Reference the Google Play Services library project from the AbsurdEngine
     * *File -> Import -> Existing Android Code Into Workspace*
     * *AbsurdEngine -> Project -> Properties -> Android*
