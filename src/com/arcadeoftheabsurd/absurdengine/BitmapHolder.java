@@ -28,8 +28,25 @@ class BitmapHolder
 	
 	private Vector2d initialSize;
 	
+	/**
+	 * Construct a BitmapHolder that initializes the given Bitmap to the given size
+	 * If one of initialWidth and initialHeight is equal to -1, that dimension will be scaled according to the Bitmap's aspect ratio
+	 * If both initialWidth and initialHeight are -1, the Bitmap will retain its original size  
+	 * @param bitmap
+	 * @param initialWidth 
+	 * @param initialHeight
+	 */
 	BitmapHolder(Bitmap bitmap, int initialWidth, int initialHeight) {
 		this.bitmap = bitmap;
+		
+		if (initialWidth == -1 && initialHeight == 1) {
+			initialWidth = bitmap.getWidth();
+			initialHeight = bitmap.getHeight();
+		} else if (initialHeight == -1) {
+			initialHeight = (initialWidth * bitmap.getHeight()) / bitmap.getWidth();
+		} else if (initialWidth == -1) {
+			initialWidth = (initialHeight * bitmap.getWidth()) / bitmap.getHeight();
+		}
 		initialSize = new Vector2d(initialWidth, initialHeight);
 	}
 	

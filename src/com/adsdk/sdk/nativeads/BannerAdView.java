@@ -13,7 +13,6 @@ package com.adsdk.sdk.nativeads;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.widget.TextView;
 
 import com.arcadeoftheabsurd.absurdengine.Sprite;
@@ -32,6 +31,7 @@ public class BannerAdView extends NativeAdView
 	private int textSize;
 	private int textMarginLeft;
 	private int textMarginRight;
+	private int textColor;
 		
 	private boolean readyToWrite = false;
 	private int descriptionWidth;
@@ -39,11 +39,12 @@ public class BannerAdView extends NativeAdView
 	private StringBuilder descriptionBuffer;
 	private int curChar;
 	
-	public BannerAdView(Context context, int textSize, int textMarginLeft, int textMarginRight) {
+	public BannerAdView(Context context, int textSize, int textMarginLeft, int textMarginRight, int textColor) {
 		super(context);
 		this.textSize = textSize;
 		this.textMarginLeft = textMarginLeft;
 		this.textMarginRight = textMarginRight;
+		this.textColor = textColor;
 		
 		setOrientation(HORIZONTAL);
 		spacerView = new TextView(context);
@@ -62,7 +63,7 @@ public class BannerAdView extends NativeAdView
 		descriptionBuffer.append(descriptionChars[curChar++]);
 		
 		descriptionView.setText(descriptionBuffer.toString());
-		descriptionView.setTextColor(Color.WHITE);
+		descriptionView.setTextColor(textColor);
 		descriptionView.setTextSize(textSize);
 		
 		readyToWrite = true;
