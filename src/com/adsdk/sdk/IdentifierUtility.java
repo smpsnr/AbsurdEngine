@@ -46,6 +46,11 @@ public class IdentifierUtility
 	private static boolean openUDIDServiceFailed = false;
 	/*}}*/
 	
+	/**
+	 * Accesses the device's ad id for later retrieval 
+	 * This method must NOT be called from the UI thread
+	 * @throws InterruptedException
+	 */
 	public static void setAdId() throws InterruptedException {
 		adId = getAdIdImpl();
 	}
@@ -54,6 +59,11 @@ public class IdentifierUtility
 		return adId;
 	}
 	
+	/**
+	 * Accesses Google Play Services on Android - on iOS, does nothing
+	 * This method must be called from the UI thread
+	 * @param activity
+	 */
 	public static void requireAdService(final Activity activity) {
 		/*{{ ANDROIDONLY*/
 		IdentifierUtility.context = activity;

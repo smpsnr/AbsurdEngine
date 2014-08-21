@@ -29,21 +29,24 @@ import android.webkit.WebView;
 
 public class DeviceUtility 
 {	
-	private static Context context;
-	
 	private static String localIp;
 	private static String userAgent;
-		
-	public static void setDeviceContext(Context context) {
-		DeviceUtility.context = context;
-	}
 	
 	public static void setLocalIp() {
 		localIp = getLocalIpImpl();
 	}
 	
-	public static void setUserAgent() {
-		userAgent = getUserAgentImpl();
+	/**
+	 * Stores this device's default user agent for later retrieval
+	 * This method must be called from the UI thread
+	 * @param context
+	 */
+	public static void setUserAgent(Context context) {
+		userAgent = getUserAgentImpl(
+			/*{{ ANDROIDONLY*/
+		    context		
+		    /*}}*/
+		);
 	}
 	
 	public static String getLocalIp() {
@@ -102,7 +105,7 @@ public class DeviceUtility
 	/*}}*/
 	
 	/*{{ ANDROIDONLY*/
-	private static String getUserAgentImpl() {
+	private static String getUserAgentImpl(Context context) {
 		return new WebView(context).getSettings().getUserAgentString();
 	}
 	/*}}*/
