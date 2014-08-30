@@ -76,6 +76,7 @@ public class SoundManager
 		for (MediaPlayer m : mediaChannels) {
 			m.release();
 		}
+		initialized = false;
 	}
 	
 	public static void playSound(int channel) {

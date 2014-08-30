@@ -75,6 +75,16 @@ public abstract class GameActivity extends Activity implements GameLoadListener,
         }
     }
     
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
+    
+    @Override
+    protected void onDestroy() {
+    	super.onDestroy();
+    }
+    
     protected final void loadContent() {
     	gameHandler.post (
             new Runnable() {
