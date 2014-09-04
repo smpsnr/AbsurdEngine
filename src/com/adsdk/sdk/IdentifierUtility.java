@@ -98,11 +98,15 @@ public class IdentifierUtility
 						try {
 							Thread.sleep(UDID_WAIT_INC);
 							waitTimer -= UDID_WAIT_INC;
-						} catch (InterruptedException e) {}
+						} catch (InterruptedException e) {
+							Thread.currentThread().interrupt();
+						}
 					}
 				}
 			});
-		} catch (InterruptedException e) {}
+		} catch (InterruptedException e) {
+			Thread.currentThread().interrupt();
+		}
 		if (!OpenUDID_manager.isInitialized()) {
 			openUDIDServiceFailed = true;
 		}

@@ -51,7 +51,9 @@ public class RunnerThread extends Thread
             try {
                 join();
                 retry = false;
-            } catch (InterruptedException e) {}
+            } catch (InterruptedException e) {
+            	Thread.currentThread().interrupt();
+            }
         }
     }
     
@@ -81,7 +83,9 @@ public class RunnerThread extends Thread
                     try {
                         // force this thread to wait on pauseLock's monitor
                         pauseLock.wait();
-                    } catch (InterruptedException e) {}               
+                    } catch (InterruptedException e) {
+                    	Thread.currentThread().interrupt();
+                    }               
                 }
             }                
             listener.update();
@@ -93,7 +97,9 @@ public class RunnerThread extends Thread
             if (sleepTime >= 0) {
                 try {
                     sleep(sleepTime);
-                } catch (InterruptedException e) {}          
+                } catch (InterruptedException e) {
+                	Thread.currentThread().interrupt();
+                }          
             }  
         }
     }
