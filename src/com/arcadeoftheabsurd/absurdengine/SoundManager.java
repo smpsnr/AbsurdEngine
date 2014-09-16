@@ -79,6 +79,10 @@ public class SoundManager
 		initialized = false;
 	}
 	
+	public static void setVolume(int channel, float leftVolume, float rightVolume) {
+		mediaChannels[channel].setVolume(leftVolume, rightVolume);
+	}
+	
 	public static void playSound(int channel) {
 		mediaChannels[channel].start();
 		paused[channel] = false;

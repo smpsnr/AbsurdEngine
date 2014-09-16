@@ -99,7 +99,7 @@ public abstract class GameView extends View implements TimerAsyncListener, Timer
     	return new Sprite(bitmapStorage.get(bitmapId), x, y);
     }
     
-    protected void swapSprite(Sprite sprite, int bitmapId) {
+    protected void setSpriteBitmap(Sprite sprite, int bitmapId) {
     	sprite.setBitmap(bitmapStorage.get(bitmapId));
     }
     
