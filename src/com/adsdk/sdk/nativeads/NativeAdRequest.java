@@ -41,6 +41,7 @@ public class NativeAdRequest
 	private double longitude = 0.0;
 	private double latitude = 0.0;
 	private int userAge;
+	private boolean adDoNotTrack = true;
 	
 	@SuppressWarnings("deprecation")
 	public String toString() {
@@ -92,8 +93,10 @@ public class NativeAdRequest
 
 		if (DeviceUtility.isIOS()) {
 			b.append("&o_iosadvid=" + adId);
+			b.append("&o_iosadvidlimit=" + (adDoNotTrack ? "1" : "0"));
 		} else {
 			b.append("&o_andadvid=" + adId);
+			b.append("&o_andadvdnt=" + (adDoNotTrack ? "1" : "0"));
 		}
 		b.append("&v=" + this.getProtocolVersion());
 
@@ -204,5 +207,13 @@ public class NativeAdRequest
 	
 	public void setKeywords(List<String> keywords) {
 		this.keywords = keywords;
+	}
+	
+	public boolean getAdDoNotTrack() {
+		return adDoNotTrack;
+	}
+	
+	public void setAdDoNotTrack(boolean adDoNotTrack) {
+		this.adDoNotTrack = adDoNotTrack;
 	}
 }
