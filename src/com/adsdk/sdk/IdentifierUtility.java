@@ -34,6 +34,7 @@ import org.OpenUDID.OpenUDID_manager;
 public class IdentifierUtility 
 {
 	private static String adId;
+	private static boolean adDoNotTrack = true;
 	private static final String DEFAULT_AD_ID = "00000000-0000-0000-0000-000000000000";
 	
 	/*{{ ANDROIDONLY*/
@@ -47,16 +48,20 @@ public class IdentifierUtility
 	/*}}*/
 	
 	/**
-	 * Accesses the device's ad id for later retrieval 
+	 * Accesses the device's ad id and tracking setting for later retrieval 
 	 * This method must NOT be called from the UI thread
 	 * @throws InterruptedException
 	 */
-	public static void setAdId() throws InterruptedException {
-		adId = getAdIdImpl();
+	public static void prepareAdId() throws InterruptedException {
+		prepareAdIdImpl();
 	}
 	
 	public static String getAdId() {
 		return adId;
+	}
+	
+	public static boolean getAdDoNotTrack() {
+		return adDoNotTrack;
 	}
 	
 	/**
@@ -114,7 +119,7 @@ public class IdentifierUtility
 	/*}}*/
 	
 	/*{{ ANDROIDONLY*/
-	private static String getAdIdImpl() {
+	private static void prepareAdIdImpl() {
 		if (!playServiceFailed) {
 			Info adInfo = null;		
 			try {
@@ -122,22 +127,25 @@ public class IdentifierUtility
 			} catch (Exception e) {
 				initOpenUDID();
 			}
-			if (adInfo.getId() != null) {
-				return adInfo.getId();
+			if (adInfo != null && adInfo.getId() != null) {
+				adId = adInfo.getId();
+				adDoNotTrack = adInfo.isLimitAdTrackingEnabled();
+				return;
 			} else {
 				initOpenUDID();
 			}
 		}
 		if (!openUDIDServiceFailed) {
 			if (!(OpenUDID_manager.getOpenUDID() == null)) {
-				return OpenUDID_manager.getOpenUDID();
+				adId = OpenUDID_manager.getOpenUDID();
+			} else {
+				adId = DEFAULT_AD_ID;
 			}
 		}
-		return DEFAULT_AD_ID;
 	}
 	/*}}*/
 	
 	/*{{ IOSONLY
-	private static native String getAdIdImpl();
+	private static native void prepareAdIdImpl();
 	/*}}*/
 }
