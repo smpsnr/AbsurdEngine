@@ -37,7 +37,6 @@ public class NativeAdRequest
 	private String publisherId;
 	private String userAgent;
 	private String adId;
-	private String protocolVersion;
 	private double longitude = 0.0;
 	private double latitude = 0.0;
 	private int userAge;
@@ -98,7 +97,7 @@ public class NativeAdRequest
 			b.append("&o_andadvid=" + adId);
 			b.append("&o_andadvdnt=" + (adDoNotTrack ? "1" : "0"));
 		}
-		b.append("&v=" + this.getProtocolVersion());
+		b.append("&v=" + Const.PROTOCOL_VERSION);
 
 		if (userAge != 0) {
 			b.append("&demo.age=" + Integer.toString(userAge));
@@ -165,17 +164,6 @@ public class NativeAdRequest
 	
 	public void setAdId(String adId) {
 		this.adId = adId;
-	}
-
-	public String getProtocolVersion() {
-		if (this.protocolVersion == null) {
-			return Const.VERSION;
-		}
-		return this.protocolVersion;
-	}
-
-	public void setProtocolVersion(String protocolVersion) {
-		this.protocolVersion = protocolVersion;
 	}
 
 	public double getLongitude() {
