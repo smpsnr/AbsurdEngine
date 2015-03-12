@@ -28,11 +28,11 @@ JAVA_OBJECT com_arcadeoftheabsurd_absurdengine_DeviceUtility_getLocalIpImpl__()
 	//XMLVM_BEGIN_NATIVE[com_arcadeoftheabsurd_absurdengine_DeviceUtility_getLocalIpImpl__]
 	NSString *IPAddressToReturn;
 
-    IPAddressToReturn = [UIDevice localWiFiIPAddress];
-
-    if(IPAddressToReturn == NULL) {
-        IPAddressToReturn = [UIDevice localCellularIPAddress];
-    }
+	if ((IPAddressToReturn = [UIDevice localWiFiIPAddress]) == NULL) {
+		if ((IPAddressToReturn = [UIDevice localCellularIPAddress]) == NULL) {
+			IPAddressToReturn = [UIDevice localSimulatorIPAddress];
+		}
+	}
 	return fromNSString(IPAddressToReturn);
 	//XMLVM_END_NATIVE
 }
