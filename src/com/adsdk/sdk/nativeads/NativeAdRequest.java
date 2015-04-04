@@ -37,6 +37,7 @@ public class NativeAdRequest
 	private String publisherId;
 	private String userAgent;
 	private String adId;
+	private String deviceIP;
 	private double longitude = 0.0;
 	private double latitude = 0.0;
 	private int userAge;
@@ -82,6 +83,8 @@ public class NativeAdRequest
 			}
 		}
 		b.append("&s=" + this.getPublisherId());
+		
+		b.append("&i=" + this.getDeviceIP());
 		
 		try {
 			b.append("&u=" + URLEncoder.encode(this.getUserAgent(), Const.ENCODING));
@@ -164,6 +167,14 @@ public class NativeAdRequest
 	
 	public void setAdId(String adId) {
 		this.adId = adId;
+	}
+	
+	public void setDeviceIP(String deviceIP) {
+		this.deviceIP = deviceIP;
+	}
+	
+	public String getDeviceIP() {
+		return deviceIP;
 	}
 
 	public double getLongitude() {

@@ -74,6 +74,7 @@ public class NativeAdManager
 			this.request = new NativeAdRequest();
 			this.request.setPublisherId(publisherId);
 			this.request.setAdId(IdentifierUtility.getAdId());
+			this.request.setDeviceIP(DeviceUtility.getLocalIp());
 			this.request.setAdDoNotTrack(IdentifierUtility.getAdDoNotTrack());
 			this.request.setUserAgent(DeviceUtility.getUserAgent());
 		}
