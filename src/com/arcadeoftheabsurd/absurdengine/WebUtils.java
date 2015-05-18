@@ -29,9 +29,7 @@ import android.content.Context;
  */
 
 public class WebUtils 
-{
-	//static final String IP_API = "http://ipinfo.io/ip";
-	
+{	
 	// downloads a file to the current process's private storage space
 	public static String downloadFile(Context context, String fileUrl, String fileName) throws IOException {
 		URL url = new URL(fileUrl);

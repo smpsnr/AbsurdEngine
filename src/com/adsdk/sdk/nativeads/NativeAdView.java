@@ -10,6 +10,7 @@ import java.util.List;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.util.Log;
 import android.widget.LinearLayout;
 
 import com.adsdk.sdk.nativeads.NativeAd.Tracker;
@@ -25,6 +26,8 @@ public class NativeAdView extends LinearLayout implements NativeAdListener
 {
 	private boolean impressionReported = false;
 	private List<Tracker> trackers;
+	
+	private static final String TAG = "AbsurdEngine";
 
 	public NativeAdView(Context context) {
 		super(context);
@@ -51,10 +54,10 @@ public class NativeAdView extends LinearLayout implements NativeAdListener
 						for (Tracker t : trackers) {
 							if (t.type.equals("impression")) {
 								try {
-									System.out.println("tracking impression...");
+									Log.v(TAG, "tracking impression");
 									System.out.println(WebUtils.restRequest(t.url));
 								} catch (IOException e) {
-									System.out.println("impression failed");
+									Log.e(TAG, "impression failed");
 								}
 							}
 						}

@@ -13,6 +13,7 @@ import java.net.URL;
 import java.net.URLConnection;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.adsdk.sdk.Const;
 import com.adsdk.sdk.RequestException;
@@ -33,6 +34,8 @@ public class RequestNativeAd
 {
 	private Context context;
 	
+	private static final String TAG = "AbsurdEngine";
+	
 	public RequestNativeAd(Context context) {
 		this.context = context;
 	}
@@ -43,7 +46,7 @@ public class RequestNativeAd
 			URLConnection conn = url.openConnection();
 			conn.setUseCaches(false);
 			conn.setRequestProperty("User-Agent", request.getUserAgent());
-			System.out.println("sending ad request");
+			Log.v(TAG, "sending ad request");
 			return parse(conn.getInputStream(), request);	
 		} catch (IOException e) {
 			throw new RequestException("Error sending ad request", e);
@@ -63,7 +66,7 @@ public class RequestNativeAd
 			String result = sb.toString();
 			reader.close();
 			
-			System.out.println("parsing result");
+			Log.v(TAG, "parsing ad response");
 						
 			JsonObject mainObject = JsonObject.readFrom(result);
 			JsonValue imageAssetsValue = mainObject.get("imageassets");
