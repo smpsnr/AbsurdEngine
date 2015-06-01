@@ -12,9 +12,11 @@
 package com.arcadeoftheabsurd.absurdengine;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.view.View;
+
 import java.util.ArrayList;
 import java.util.Observable;
 
@@ -115,6 +117,12 @@ public abstract class GameView extends View implements TimerAsyncListener, Timer
     protected int loadBitmapResource(int resourceId, Vector2d initialSize) {
     	int bitmapId = bitmapStorage.size();
     	bitmapStorage.add(new BitmapHolder(BitmapFactory.decodeResource(getResources(), resourceId), initialSize.x, initialSize.y));
+    	return bitmapId;
+    }
+    
+    protected int loadBitmapResource(Bitmap bitmap, Vector2d initialSize) {
+    	int bitmapId = bitmapStorage.size();
+    	bitmapStorage.add(new BitmapHolder(bitmap, initialSize.x, initialSize.y));
     	return bitmapId;
     }
     
