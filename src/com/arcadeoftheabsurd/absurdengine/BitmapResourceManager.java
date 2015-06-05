@@ -5,25 +5,26 @@ import java.util.HashMap;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.util.Log;
 
 public class BitmapResourceManager 
 {
 	private Bitmap bitmaps[];
 	private int index = 0;
-	private HashMap<String, Integer> names = new HashMap<String, Integer>();
+	private HashMap<Integer, Integer> names = new HashMap<Integer, Integer>();
+	private Resources res;
 		
-	public BitmapResourceManager(int size) {
+	public BitmapResourceManager(Resources res, int size) {
+		this.res = res;
 		bitmaps = new Bitmap[size];
 	}
 	
-	public void loadBitmap(Resources res, int id) {
+	public void loadBitmap(int id) {
 		bitmaps[index] = BitmapFactory.decodeResource(res, id);
-		names.put(res.getString(id), index);
+		names.put(id, index);
 		index++;
 	}
 	
-	public Bitmap getBitmap(String name) {
-		return bitmaps[names.get(name)];
+	public Bitmap getBitmap(int id) {
+		return bitmaps[names.get(id)];
 	}
 }
